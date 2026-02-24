@@ -1,0 +1,2592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Privacy Awareness | Cyber Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #bc13fe;
+            --neon-green: #0aff0a;
+            --neon-yellow: #ffd700;
+            --bg-dark: #050a10;
+            --glass-bg: rgba(10, 20, 30, 0.85);
+            --glass-border: rgba(0, 243, 255, 0.3);
+            --text-main: #e0e6ed;
+        }
+
+        /* --- RESET & SETUP --- */
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-pink); }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+        .matrix-column { position: absolute; top: -100%; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; text-shadow: 0 0 8px currentColor; animation: fall linear infinite; }
+        @keyframes fall { 0% { transform: translateY(-20%); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(120vh); opacity: 0; } }
+
+        .cyber-grid {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 50vh;
+            background: linear-gradient(transparent 0%, var(--neon-blue) 2%, transparent 3%), linear-gradient(90deg, transparent 0%, var(--neon-blue) 2%, transparent 3%);
+            background-size: 100px 50px; transform: perspective(500px) rotateX(60deg) translateY(100px) scale(2);
+            opacity: 0.15; z-index: -1; animation: gridMove 20s linear infinite;
+        }
+        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 1000px; } }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%; z-index: 1000; pointer-events: none; opacity: 0.6;
+        }
+
+        /* --- HEADER & HERO --- */
+        header { min-height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; padding: 20px; overflow: hidden; }
+        
+        .glitch-wrapper { position: relative; display: inline-block; }
+        h1.glitch {
+            font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; color: #fff;
+            position: relative; text-transform: uppercase; letter-spacing: 5px;
+            text-shadow: 3px 3px 0px var(--neon-pink), -3px -3px 0px var(--neon-blue);
+            margin: 0; z-index: 2;
+        }
+        h1.glitch::before, h1.glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark);
+        }
+        h1.glitch::before { left: 2px; text-shadow: -2px 0 var(--neon-pink); clip-path: inset(44% 0 61% 0); animation: glitch-anim-1 2.5s infinite linear alternate-reverse; }
+        h1.glitch::after { left: -2px; text-shadow: -2px 0 var(--neon-blue); clip-path: inset(50% 0 30% 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(80% 0 10% 0); } 20% { clip-path: inset(10% 0 60% 0); } 40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); } 80% { clip-path: inset(10% 0 70% 0); } 100% { clip-path: inset(30% 0 20% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); } 20% { clip-path: inset(30% 0 10% 0); } 40% { clip-path: inset(70% 0 10% 0); }
+            60% { clip-path: inset(20% 0 50% 0); } 80% { clip-path: inset(50% 0 30% 0); } 100% { clip-path: inset(0% 0 80% 0); }
+        }
+
+        .subtitle { font-size: 1.8rem; color: var(--neon-blue); margin-top: 10px; font-weight: 500; min-height: 1.5em; text-shadow: 0 0 20px var(--neon-blue); font-family: 'Orbitron'; letter-spacing: 2px; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: sticky; top: 0; z-index: 1000; background: rgba(2, 2, 5, 0.95); backdrop-filter: blur(15px);
+            border-bottom: 2px solid var(--neon-blue); padding: 10px 0; box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+        }
+        nav a {
+            color: #fff; text-decoration: none; margin: 0 10px; font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; position: relative; padding: 8px 0; transition: 0.3s; cursor: pointer; text-shadow: 0 0 5px var(--neon-blue);
+        }
+        nav a.active, nav a:hover { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); transform: scale(1.05); }
+        nav a::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: var(--neon-pink); transition: 0.3s; box-shadow: 0 0 10px var(--neon-pink); }
+        nav a.active::before, nav a:hover::before { width: 100%; }
+
+        /* --- PAGE LOGIC (SPA) --- */
+        .page-section { display: none; animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); flex: 1; }
+        .page-section.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* --- CONTAINERS --- */
+        section { padding: 40px 20px; max-width: 1200px; margin: 0 auto 50px auto; }
+        .container {
+            background: rgba(10, 15, 20, 0.7); backdrop-filter: blur(10px); padding: 40px; border-radius: 2px;
+            position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+        }
+        .container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, var(--neon-blue), transparent, var(--neon-pink)); z-index: -1; opacity: 0.3; animation: borderGlow 4s linear infinite;
+        }
+        @keyframes borderGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+        h2 { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 2.5rem; margin-bottom: 30px; text-transform: uppercase; border-bottom: 2px solid var(--neon-pink); display: inline-block; padding-right: 40px; text-shadow: 0 0 10px var(--neon-pink); }
+        h3 { color: var(--neon-blue); margin-top: 30px; font-family: 'Orbitron'; font-weight: 700; letter-spacing: 1px; }
+        p { font-size: 1.2rem; margin-bottom: 20px; color: #ccc; text-align: justify; }
+        .highlight { background: rgba(0, 243, 255, 0.1); color: var(--neon-blue); border: 1px solid var(--neon-blue); padding: 2px 8px; border-radius: 2px; font-weight: bold; box-shadow: 0 0 10px rgba(0, 243, 255, 0.3); text-transform: uppercase; }
+
+        /* --- PHOTOS --- */
+        .student-photos { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px; }
+        .photo-frame { width: 130px; height: 130px; position: relative; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); background: var(--neon-blue); padding: 3px; transition: 0.3s; }
+        .photo-frame:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 0 30px var(--neon-blue); }
+        .student-photo { width: 100%; height: 100%; object-fit: cover; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); filter: grayscale(100%) contrast(1.2); transition: 0.3s; }
+        .photo-frame:hover .student-photo { filter: grayscale(0%); }
+
+        /* --- CHART --- */
+        .chart-container { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-blue); border-radius: 10px; padding: 20px; margin: 30px 0; box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); height: 600px; position: relative; }
+        .chart-container.xy { height: auto; min-height: 600px; }
+        
+        /* --- FLIP CARDS --- */
+        .dos-donts-container { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
+        .flip-card { background-color: transparent; width: 350px; height: 450px; perspective: 1000px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; border: 2px solid; background: rgba(0,0,0,0.8); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .flip-card-front { border-color: #555; }
+        .flip-card-back { transform: rotateY(180deg); color: white; text-align: left; align-items: flex-start; }
+        .dos .flip-card-front { border-color: var(--neon-green); box-shadow: inset 0 0 20px rgba(10, 255, 10, 0.2); }
+        .dos .flip-card-back { background: rgba(10, 255, 10, 0.1); border-color: var(--neon-green); }
+        .donts .flip-card-front { border-color: var(--neon-pink); box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.2); }
+        .donts .flip-card-back { background: rgba(255, 0, 85, 0.1); border-color: var(--neon-pink); }
+        .big-icon { font-size: 5rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px currentColor); }
+
+        /* === UPDATED RIBBON HEXAGON DIAGRAM (NO HOVER) === */
+        .diagram-container {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            margin: 60px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hexagon Generator using clip-path */
+        .hex {
+            position: absolute;
+            background-color: rgba(0, 243, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            /* Pointy-top hexagon geometry */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            border: 1px solid var(--neon-blue);
+        }
+
+        .center-hex {
+            width: 200px;
+            height: 220px;
+            font-size: 1.1rem;
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .outer-hex {
+            width: 140px;
+            height: 160px;
+            font-size: 2.5rem;
+            background: rgba(0, 0, 0, 0.6);
+            
+            /* ACTIVE STYLES APPLIED PERMANENTLY (REMOVED FROM :HOVER) */
+            box-shadow: 0 0 30px var(--neon-blue);
+            border-color: #fff;
+            background: rgba(0, 243, 255, 0.1);
+            cursor: default; /* No longer pointer */
+        }
+        
+        /* Removed .outer-hex:hover to disable interaction */
+
+        /* Precise Positioning for the 6-side layout */
+        .pos-1 { transform: translateY(-240px); }
+        .pos-2 { transform: translate(210px, -120px); }
+        .pos-3 { transform: translate(210px, 120px); }
+        .pos-4 { transform: translateY(240px); }
+        .pos-5 { transform: translate(-210px, 120px); }
+        .pos-6 { transform: translate(-210px, -120px); }
+
+        /* The 3D Folded Ribbons */
+        .ribbon {
+            position: absolute;
+            width: 60px;
+            height: 160px;
+            /* Creates the vertical fold look */
+            background: linear-gradient(90deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.3));
+            z-index: 5;
+            transform-origin: center;
+            /* Trapezoid shape: wider at the top (outer hex), narrower at bottom (inner hex) */
+            clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        /* Ribbon Rotations */
+        .r1 { transform: rotate(0deg) translateY(-160px); }
+        .r2 { transform: rotate(60deg) translateY(-160px); }
+        .r3 { transform: rotate(120deg) translateY(-160px); }
+        .r4 { transform: rotate(180deg) translateY(-160px); }
+        .r5 { transform: rotate(240deg) translateY(-160px); }
+        .r6 { transform: rotate(300deg) translateY(-160px); }
+
+        /* === RESTORED FLOW MARKING (1 to 2 to 3) === */
+        .flow-path {
+            position: absolute;
+            width: 580px;
+            height: 580px;
+            pointer-events: none;
+            z-index: 25;
+        }
+
+        .flow-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .arrow-line {
+            fill: none;
+            stroke: var(--neon-blue);
+            stroke-width: 2px; /* Thinner as requested */
+            stroke-dasharray: 10, 6;
+            opacity: 0.5; /* Less prominent */
+            filter: drop-shadow(0 0 5px var(--neon-blue));
+        }
+
+        /* === UPDATED CONTENT (NO HOVER) === */
+        .hex-number {
+            opacity: 0; /* Hidden permanently */
+        }
+
+        .hex-content {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 5px; /* Reduced padding */
+            box-sizing: border-box;
+            opacity: 1; /* Visible permanently */
+            pointer-events: auto;
+            background: rgba(0, 0, 0, 0.95); 
+            z-index: 30;
+        }
+
+        /* Removed .outer-hex:hover .hex-content */
+        /* Removed .outer-hex:hover .hex-number */
+
+        .hex-content h4 {
+            margin: 0 0 2px 0; /* Reduced margin */
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            font-weight: 800;
+            line-height: 1.1;
+            text-align: center;
+            letter-spacing: normal; /* Ensure normal spacing */
+        }
+
+        .hex-content p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #fff;
+            line-height: 1.1; /* Tighter line height */
+            text-align: center;
+            letter-spacing: normal; /* Ensure normal spacing */
+            word-spacing: normal;
+        }
+
+        /* --- STORIES --- */
+        .stories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+        .story-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; background: rgba(0,0,0,0.6); border: 1px solid #444; text-decoration: none; color: inherit; display: block; }
+        .story-card:hover { transform: translateY(-5px); border-color: var(--neon-pink); }
+        .story-media { height: 220px; background: #eceff1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .story-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .story-card:hover .story-media img { transform: scale(1.1); }
+        .story-content { padding: 25px; }
+        .story-tag { display: inline-block; padding: 5px 10px; background: #e1f5fe; color: #01579b; border-radius: 20px; font-size: 0.8em; margin-bottom: 10px; font-weight: bold; }
+
+        /* --- CASE STUDY --- */
+        .case-study-box {
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 5px solid var(--neon-yellow);
+            padding: 25px;
+            margin-top: 40px;
+            border-radius: 2px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+        }
+        .case-study-title {
+            color: var(--neon-yellow);
+            font-family: 'Orbitron';
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- BUTTONS --- */
+        .download-btn {
+            background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue);
+            padding: 20px 50px; font-size: 1.2rem; font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase; cursor: pointer; position: relative; overflow: hidden;
+            transition: 0.3s; text-decoration: none; display: inline-block; margin-top: 20px;
+            font-weight: bold; letter-spacing: 2px; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+        .download-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--neon-blue); transition: 0.4s; z-index: -1; }
+        .download-btn:hover { color: #000; box-shadow: 0 0 40px var(--neon-blue); }
+        .download-btn:hover::before { left: 0; }
+
+        /* --- POLL STYLING --- */
+        .polls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 30px; }
+        .poll-question { background: rgba(0,0,0,0.4); border: 1px solid #333; border-radius: 10px; padding: 20px; position: relative; }
+        .poll-question h4 { margin-top: 0; color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 15px; }
+        .poll-option { margin: 10px 0; cursor: pointer; padding: 12px; border: 1px solid #555; border-radius: 6px; transition: all 0.2s; text-align: left; font-weight: 500; color: #ddd; background: rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .poll-option:hover { background-color: rgba(0, 243, 255, 0.1); transform: translateX(5px); border-color: var(--neon-blue); }
+        .progress-bar { height: 6px; background-color: #222; border-radius: 3px; margin-top: 8px; overflow: hidden; display: none; width: 100%; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink)); width: 0%; transition: width 1s ease-in-out; }
+
+        /* --- MEDIA GALLERY STYLES --- */
+        .gallery-section { margin-bottom: 60px; }
+        .gallery-section h3 { 
+            font-size: 1.8rem; 
+            border-left: 5px solid var(--neon-pink); 
+            padding-left: 15px; 
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .media-item {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #444;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+        .media-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
+        }
+        .media-type {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--neon-green);
+            margin-bottom: 10px;
+        }
+        .media-preview {
+            width: 100%;
+            height: 180px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .media-preview img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+        .media-item:hover .media-preview img { opacity: 1; transform: scale(1.1); }
+        
+        .play-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.4); transition: 0.3s;
+            pointer-events: none;
+        }
+        .play-icon {
+            font-size: 3rem; color: white; text-shadow: 0 0 10px var(--neon-pink);
+            opacity: 0.8;
+        }
+        .media-item:hover .play-overlay { background: rgba(0,0,0,0.1); }
+        .media-item:hover .play-icon { opacity: 1; transform: scale(1.1); }
+
+        .media-info { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .media-title { font-size: 1.2rem; color: #fff; margin: 0 0 10px 0; font-weight: bold; }
+        .media-desc { font-size: 0.9rem; color: #aaa; line-height: 1.4; }
+
+        /* --- SLIDESHOW STYLES (Shared for Posters & Clippings) --- */
+        .poster-slideshow-container, .clipping-slideshow-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(10, 15, 20, 0.95);
+            border: 1px solid var(--neon-blue);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+            overflow: hidden;
+            position: relative;
+            height: 550px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .poster-slide, .clipping-slide {
+            display: none;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            flex-direction: row;
+            align-items: center;
+            padding: 0;
+            animation: fadeIn 0.5s;
+            transition: transform 0.1s linear;
+            transform-origin: top center;
+        }
+
+        /* Left Side: Text Content */
+        .poster-slide-content, .clipping-slide-content {
+            flex: 1;
+            padding: 40px 50px;
+            height: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Right Side: Image Container */
+        .poster-slide-image, .clipping-slide-image {
+            flex: 1;
+            height: 100%;
+            background-color: #050a10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            border-left: 1px solid #333;
+        }
+
+        /* The actual image tag styling */
+        .poster-slide-image img, .clipping-slide-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            border: 1px solid var(--neon-blue);
+        }
+
+        /* Typography for Slideshow */
+        .poster-slide-content h2, .clipping-slide-content h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            margin: 0 0 20px 0;
+            font-size: 2.2em;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--neon-pink);
+            padding-bottom: 10px;
+            display: inline-block;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .poster-slide-content ul, .clipping-slide-content ul {
+            text-align: left;
+            font-size: 1.15em;
+            line-height: 1.6;
+            color: #e0e6ed;
+            padding-left: 20px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .poster-slide-content li, .clipping-slide-content li { margin-bottom: 10px; }
+        .poster-slide-content strong, .clipping-slide-content strong { color: var(--neon-pink); }
+
+        /* Navigation Buttons for Slideshow */
+        .poster-prev, .poster-next, .clipping-prev, .clipping-next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 20px;
+            margin-top: -30px;
+            color: var(--neon-blue);
+            font-weight: bold;
+            font-size: 30px;
+            transition: 0.3s;
+            border-radius: 0 5px 5px 0;
+            background-color: rgba(0,0,0,0.8);
+            user-select: none;
+            z-index: 10;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+        .poster-next, .clipping-next { right: 0; border-radius: 5px 0 0 5px; }
+        .poster-prev:hover, .poster-next:hover, .clipping-prev:hover, .clipping-next:hover { 
+            background-color: var(--neon-blue); 
+            color: #000; 
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        /* --- ZOOM CONTROLS STYLES --- */
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            display: flex;
+            gap: 10px;
+            background: rgba(5, 10, 16, 0.9);
+            padding: 5px 15px;
+            border: 1px solid var(--neon-pink);
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+            align-items: center;
+        }
+        .zoom-btn {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .zoom-btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        .zoom-level {
+            color: var(--neon-pink);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn { from {opacity: .4} to {opacity: 1} }
+
+        /* Responsive Slideshow */
+        @media screen and (max-width: 800px) {
+            .poster-slide, .clipping-slide { flex-direction: column-reverse; }
+            .poster-slide-content, .clipping-slide-content { height: 45%; padding: 20px; }
+            .poster-slide-image, .clipping-slide-image { height: 55%; border-left: none; border-top: 1px solid #333; }
+            .poster-slide-content h2, .clipping-slide-content h2 { font-size: 1.5em; }
+            .poster-prev, .poster-next, .clipping-prev, .clipping-next { padding: 10px; font-size: 20px; }
+            .diagram-container { transform: scale(0.6); }
+        }
+
+        /* --- ADVANCED CHATBOT STYLES --- */
+        .chatbot-container {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+        }
+        .chatbot-header {
+            background: rgba(0, 243, 255, 0.15);
+            color: var(--neon-blue);
+            padding: 15px 20px;
+            font-weight: bold;
+            font-family: 'Orbitron';
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--neon-blue);
+            border-radius: 15px 15px 0 0;
+        }
+        .bot-status { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .status-dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; box-shadow: 0 0 5px var(--neon-green); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .chatbot-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.95rem; line-height: 1.4; position: relative; animation: popIn 0.3s ease-out; }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bot-msg { align-self: flex-start; background: rgba(0, 243, 255, 0.1); border: 1px solid rgba(0, 243, 255, 0.3); color: #e0e6ed; border-bottom-left-radius: 2px; }
+        .bot-msg ul { margin: 10px 0 0 0; padding-left: 5px; }
+        .bot-msg li { margin-bottom: 8px; list-style-type: none; color: var(--neon-blue); cursor: pointer; border-bottom: 1px solid #333; padding: 5px; transition: 0.2s; }
+        .bot-msg li:hover { color: var(--neon-pink); background: rgba(255,255,255,0.05); }
+        .bot-msg strong { color: #fff; }
+
+        .user-msg { align-self: flex-end; background: linear-gradient(135deg, var(--neon-pink), #9c27b0); border: 1px solid var(--neon-pink); color: white; border-bottom-right-radius: 2px; box-shadow: 0 4px 15px rgba(188, 19, 254, 0.3); }
+        .message-time { display: block; font-size: 0.7rem; opacity: 0.7; margin-top: 5px; text-align: right; }
+
+        .typing-indicator { align-self: flex-start; background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 12px; display: none; align-items: center; gap: 5px; margin-bottom: 10px; border: 1px solid #333; }
+        .dot { width: 6px; height: 6px; background: #888; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+        .quick-replies { padding: 10px 20px 0; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .chip { background: rgba(255,255,255,0.05); border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; white-space: nowrap; cursor: pointer; transition: 0.3s; font-family: 'Rajdhani', sans-serif; }
+        .chip:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 10px var(--neon-blue); }
+
+        .chatbot-input-area { padding: 15px 20px; border-top: 1px solid #333; display: flex; gap: 10px; background: rgba(0,0,0,0.3); border-radius: 0 0 15px 15px; }
+        .chat-input { flex: 1; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid #555; color: white; border-radius: 25px; font-family: 'Rajdhani', sans-serif; font-size: 1rem; outline: none; transition: 0.3s; }
+        .chat-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0,243,255,0.1); }
+        .send-btn {
+            background: var(--neon-blue); color: #000; border: none; padding: 10px 25px;
+            border-radius: 25px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .send-btn:hover { background: #fff; box-shadow: 0 0 15px var(--neon-blue); }
+
+        /* --- ADVANCED FORUM STYLES --- */
+        .forum-tabs { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 5px; }
+        .forum-tab-btn { background: transparent; border: none; color: #888; padding: 10px 20px; font-family: 'Orbitron'; font-size: 1rem; cursor: pointer; position: relative; transition: 0.3s; }
+        .forum-tab-btn.active { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .forum-tab-btn.active::after { content: ''; position: absolute; bottom: -7px; left: 0; width: 100%; height: 3px; background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+        .forum-tab-btn:hover:not(.active) { color: #fff; }
+
+        .forum-content-panel { display: none; animation: fadeIn 0.4s ease; }
+        .forum-content-panel.active { display: block; }
+
+        .forum-post-card { background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 8px; padding: 20px; margin-bottom: 15px; display: flex; gap: 20px; transition: 0.3s; }
+        .forum-post-card:hover { border-color: var(--neon-blue); background: rgba(255,255,255,0.05); }
+        
+        /* Styles for the Blog Embed Card specifically */
+        .blog-embed-card { 
+            width: 100%; 
+            display: block !important; 
+            border: 1px solid var(--neon-pink); 
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.1); 
+        }
+        .blog-embed-container { 
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 5px; 
+            border: 1px solid var(--neon-blue); 
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); 
+            background: #fff; 
+            margin-top: 15px; 
+        }
+        .blog-embed-container iframe { 
+            border: none; 
+        }
+
+        .post-vote-box { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 40px; }
+        .vote-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .vote-btn:hover { color: var(--neon-blue); }
+        .vote-count { font-weight: bold; color: var(--neon-blue); font-size: 1.1rem; }
+        .post-content-area { flex: 1; width: 100%; }
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .post-user-info { display: flex; align-items: center; gap: 10px; }
+        .post-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--neon-pink); }
+        .post-username { font-weight: bold; color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; }
+        .post-meta { font-size: 0.75rem; color: #666; font-family: 'Courier New'; }
+        .post-tag { background: rgba(0, 243, 255, 0.1); color: var(--neon-blue); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; border: 1px solid rgba(0, 243, 255, 0.3); }
+        .input-area { display: flex; gap: 10px; margin-top: 20px; }
+
+        /* --- ABOUT ME PAGE --- */
+        .profile-header { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; margin-bottom: 50px; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 15px; border: 1px solid var(--neon-yellow); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .profile-info h2 { color: var(--neon-yellow); margin-bottom: 10px; text-transform: uppercase; font-size: 2.5rem; }
+        .profile-role { font-size: 1.5rem; color: #fff; margin-bottom: 20px; font-family: 'Orbitron'; }
+        .profile-bio { font-size: 1.1rem; color: #ccc; border-left: 3px solid var(--neon-yellow); padding-left: 20px; margin-bottom: 30px; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+        .skill-tag { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--neon-yellow); color: var(--neon-yellow); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-family: 'Orbitron'; }
+        .quote-box { font-style: italic; font-size: 1.4rem; color: #fff; text-align: center; margin-top: 40px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; }
+
+        /* --- UPDATED PROFILE PHOTO DESIGN STYLES --- */
+        .modern-qr-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #000; /* Black background for the wrapper itself to match design */
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .qr-image-container {
+            padding: 10px;
+            background: #fff; /* White background for photo contrast */
+            border: 4px solid #000; /* Explicit black border */
+            border-radius: 15px; /* Rounded corners for a modern photo look */
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            overflow: hidden; /* Ensures rounded corners clip the image */
+            width: 250px; 
+            height: 250px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            /* CHANGED: object-fit from cover to contain to ensure the WHOLE photo/QR is visible */
+            object-fit: contain; 
+            transition: transform 0.3s;
+        }
+
+        .qr-image-container:hover img {
+            transform: scale(1.05); /* Slight zoom on hover */
+        }
+
+        /* === UPDATED: SPECIFIC SIZE & STYLE FOR ABOUT ME PHOTO === */
+        #about .qr-image-container {
+            width: 400px;  /* Increased width */
+            height: 500px; /* Increased height */
+            
+            /* STYLE UPDATE: Matching the "Same Type" neon look from the first snippet */
+            background: #000; /* Dark background */
+            border: 2px solid #00f3ff; /* Neon Blue Border */
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); /* Neon Glow */
+        }
+
+        /* --- PDF MODAL --- */
+        #pdf-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-content { background: #1a1a1a; color: #eee; width: 90%; max-width: 900px; height: 90%; border-radius: 10px; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(0, 243, 255, 0.3); border: 1px solid var(--neon-blue); overflow: hidden; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-header { background: rgba(0, 243, 255, 0.1); padding: 15px 25px; border-bottom: 1px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; font-size: 1.2rem; color: var(--neon-blue); }
+        /* Updated modal body to use iframe for preview */
+        .modal-body { padding: 0; flex: 1; position: relative; background: #fff; overflow: hidden; }
+        .modal-body iframe { width: 100%; height: 100%; border: none; }
+        
+        .modal-footer { padding: 15px; border-top: 1px solid #333; text-align: right; background: #111; }
+        .modal-btn { background: #333; color: white; border: 1px solid #555; padding: 8px 20px; cursor: pointer; font-family: 'Orbitron'; margin-left: 10px; transition: 0.3s; }
+        .modal-btn.download { background: var(--neon-blue); color: black; border: none; font-weight: bold; }
+        .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+
+        .survey-wrapper { background-color: #fff; border: 1px solid #cfd8dc; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); background: rgba(0,0,0,0.6); border: 1px solid #444; }
+
+        /* --- RESOURCES STYLES --- */
+        .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .resource-category { background: rgba(0,0,0,0.5); border: 1px solid #444; border-radius: 15px; padding: 30px; transition: 0.3s; position: relative; overflow: hidden; }
+        .resource-category:hover { border-color: var(--neon-blue); box-shadow: 0 0 20px rgba(0, 243, 255, 0.2); transform: translateY(-5px); }
+        .resource-icon { font-size: 3em; margin-bottom: 20px; display: block; }
+        .resource-link { display: block; padding: 12px; margin-bottom: 10px; background: rgba(255,255,255,0.05); border-left: 3px solid var(--neon-pink); color: #fff; text-decoration: none; transition: 0.3s; }
+        .resource-link:hover { background: var(--neon-blue); color: #000; padding-left: 20px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1.glitch { font-size: 2.5rem; }
+            nav a { margin: 5px; font-size: 0.75rem; }
+            .download-btn { width: 100%; text-align: center; }
+            .polls-grid { grid-template-columns: 1fr; }
+            .stories-grid { grid-template-columns: 1fr; }
+            .forum-layout { flex-direction: column; }
+            .forum-sidebar { width: 100%; margin-bottom: 30px; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .qr-image-container { width: 200px; height: 200px; }
+            /* Mobile override for About Me photo */
+            #about .qr-image-container { width: 280px; height: 350px; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- BACKGROUND LAYERS -->
+    <div class="scanlines"></div>
+    <div class="cyber-grid"></div>
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- PDF PREVIEW MODAL -->
+    <div id="pdf-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📄 SECURE DOCUMENT VIEWER</h3>
+                <button class="modal-btn" onclick="closePDF()">X CLOSE</button>
+            </div>
+            <!-- IFrame for Google Drive Preview -->
+            <div class="modal-body">
+                <iframe id="pdf-preview-frame" src="" allow="autoplay"></iframe>
+            </div>
+            <div class="modal-footer">
+                <span style="color:#777; font-size:0.8rem; line-height:35px; margin-right:20px;">Source: Google Drive</span>
+                <!-- Button triggers direct download -->
+                <button class="modal-btn download" onclick="downloadPDF()">DOWNLOAD FILE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT -->
+    <div id="main-app">
+        <header>
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="DATA PRIVACY AWARENESS">DATA PRIVACY AWARENESS</h1>
+            </div>
+            <div class="subtitle" id="typewriter"></div>
+        </header>
+
+        <nav>
+            <a href="#home" class="nav-link active" onclick="navigate(event, 'home')">Home</a>
+            <a href="#research" class="nav-link" onclick="navigate(event, 'research')">Research</a>
+            <a href="#awareness" class="nav-link" onclick="navigate(event, 'awareness')">Tips</a>
+            <a href="#survey" class="nav-link" onclick="navigate(event, 'survey')">Survey</a>
+            <a href="#media" class="nav-link" onclick="navigate(event, 'media')">Media Gallery</a>
+            <a href="#chatbot" class="nav-link" onclick="navigate(event, 'chatbot')">Chatbot</a>
+            <a href="#community" class="nav-link" onclick="navigate(event, 'community')">Forum</a>
+            <a href="#resources" class="nav-link" onclick="navigate(event, 'resources')">Resources</a>
+            <a href="#about" class="nav-link" onclick="navigate(event, 'about')">About Me</a>
+            <a href="#contact" class="nav-link" onclick="navigate(event, 'contact')">Contact</a>
+        </nav>
+
+        <main id="main-content">
+
+            <!-- === PAGE 1: HOME === -->
+            <div id="home" class="page-section active">
+                <section>
+                    <div class="container">
+                        <h2>Introduction</h2>
+                        <p>In today's digital age, college students are increasingly exposed to online platforms, social media, and data-sharing services. However, awareness of data privacy remains low, leading to risks such as <span class="highlight">identity theft</span>, <span class="highlight">data breaches</span>, and unauthorized surveillance. This website aims to educate and raise awareness about importance of data privacy among college students.</p>
+
+                        <h2>Objectives</h2>
+                        <ul>
+                            <li>To inform college students about basics of data privacy and its implications.</li>
+                            <li>To provide practical tips for protecting personal data online.</li>
+                            <li>To encourage responsible digital behavior through awareness campaigns.</li>
+                            <li>To analyze current awareness levels and propose improvements.</li>
+                        </ul>
+
+                        <h2>Scope of Awareness</h2>
+                        <p>The scope of this awareness initiative covers various aspects of data privacy, including social media usage, online shopping, educational platforms, and mobile app permissions. It targets college students globally, focusing on common risks like phishing, data mining, and privacy policy ignorance.</p>
+                        
+                        <h3 style="text-align: center; color: #555;">Target Audience: College Students</h3>
+                        <div class="student-photos">
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/women/11.jpg" alt="Student 1" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Student 2" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/women/13.jpg" alt="Student 3" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/men/14.jpg" alt="Student 4" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/women/15.jpg" alt="Student 5" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/men/16.jpg" alt="Student 6" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/women/17.jpg" alt="Student 7" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/men/18.jpg" alt="Student 8" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/women/19.jpg" alt="Student 9" class="student-photo"></div>
+                            <div class="photo-frame"><img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Student 10" class="student-photo"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 2: RESEARCH === -->
+            <div id="research" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Research Findings</h2>
+                        <div style="background: rgba(255,0,0,0.1); border-left: 6px solid red; padding: 25px; margin-bottom: 30px; border-radius: 8px;">
+                            <h3>Abstract</h3>
+                            <p>This research investigates level of data privacy awareness among college students. Through surveys and data analysis, we found that while students are active online, many lack understanding of privacy settings and risks. Key findings include a <span class="highlight">60% awareness gap</span> in social media privacy controls.</p>
+                        </div>
+
+                        <h3 style="text-align: center;">Awareness Statistics</h3>
+                        <div class="chart-container">
+                            <canvas id="awarenessChart"></canvas>
+                        </div>
+
+                        <!-- === X-Y AXIS CHART SECTION (KEEPING FIXED VERSION) === -->
+                        <h3 style="text-align: center; margin-top: 50px;">Detailed Survey Analysis (X-Y Axis)</h3>
+                        <p style="text-align: center; color: #666;">Hover over bars to reveal specific question text.</p>
+                        <div class="chart-container xy" style="padding: 10px;">
+                            <canvas id="xyCanvas" width="800" height="500" style="width: 100%; height: auto;"></canvas>
+                        </div>
+
+                        <p style="text-align: center; color: #666;">This chart illustrates percentage of college students aware of data privacy risks across different categories.</p>
+
+                        <h3>Key Insights</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                            <div style="background: rgba(0,0,0,0.5); padding: 25px; border-radius: 10px; border-top: 5px solid var(--neon-blue); transition: 0.3s;">
+                                <span style="font-size: 3em; display:block; margin-bottom:15px;">📱</span>
+                                <div style="font-size: 1.1em;">Only <span class="highlight">45%</span> of students regularly review app permissions.</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 25px; border-radius: 10px; border-top: 5px solid var(--neon-blue); transition: 0.3s;">
+                                <span style="font-size: 3em; display:block; margin-bottom:15px;">⚠️</span>
+                                <div style="font-size: 1.1em;"><span class="highlight">70%</span> have experienced or know someone who has faced data breaches.</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 25px; border-radius: 10px; border-top: 5px solid var(--neon-blue); transition: 0.3s;">
+                                <span style="font-size: 3em; display:block; margin-bottom:15px;">📢</span>
+                                <div style="font-size: 1.1em;">Social media is primary source of privacy concerns.</div>
+                            </div>
+                            <div style="background: rgba(0,0,0,0.5); padding: 25px; border-radius: 10px; border-top: 5px solid var(--neon-blue); transition: 0.3s;">
+                                <span style="font-size: 3em; display:block; margin-bottom:15px;">🎓</span>
+                                <div style="font-size: 1.1em;">Educational interventions can increase awareness by up to 50%.</div>
+                            </div>
+                        </div>
+
+                        <h3>Download Research Paper</h3>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <!-- Button triggers the new preview modal -->
+                            <a href="#" class="download-btn" onclick="openPDFModal()">Preview & Download Paper</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 3: AWARENESS TIPS, STORIES & CASE STUDY === -->
+            <div id="awareness" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Awareness Tips</h2>
+                        <p style="text-align: center;">Hover over cards to decrypt security protocols.</p>
+
+                        <div class="dos-donts-container">
+                            <div class="flip-card dos">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <div class="big-icon" style="color: var(--neon-green);">✅</div>
+                                        <h3>AUTHORIZED ACTIONS</h3>
+                                        <p>(Hover to Decrypt)</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3>DO'S</h3>
+                                        <ul>
+                                            <li>Use strong, unique passwords.</li>
+                                            <li>Enable Two-Factor Authentication (2FA).</li>
+                                            <li>Read privacy policies before downloading apps.</li>
+                                            <li>Regularly update your software.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flip-card donts">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <div class="big-icon" style="color: var(--neon-pink);">❌</div>
+                                        <h3>PROHIBITED ACTIONS</h3>
+                                        <p>(Hover to Decrypt)</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3>DON'TS</h3>
+                                        <ul>
+                                            <li>Don't use public Wi-Fi for banking.</li>
+                                            <li>Don't click on suspicious links.</li>
+                                            <li>Don't overshare personal info online.</li>
+                                            <li>Don't ignore security alerts.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- === RESTORED: RIBBON HEXAGON STEP-BY-STEP GUIDE (STATIC) === -->
+                        <h3 style="text-align: center; margin-top: 80px; text-align: center; margin-bottom: 20px;">Step-by-Step Privacy Guide</h3>
+                        <p style="text-align: center; color: #888; margin-bottom: 50px;">Static view. No hover required.</p>
+
+                        <div class="diagram-container">
+                            
+                            <!-- RESTORED CIRCULAR FLOW ARROW (1 to 2 to 3) -->
+                            <div class="flow-path">
+                                <svg class="flow-svg" viewBox="0 0 100 100">
+                                    <defs>
+                                        <marker id="head" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
+                                            <path d="M0,0 L4,2 L0,4 Z" fill="#00f3ff" />
+                                        </marker>
+                                    </defs>
+                                    <path d="M 50,10 A 40,40 0 1,1 49.9,10" class="arrow-line" marker-end="url(#head)" />
+                                </svg>
+                            </div>
+
+                            <!-- Center Hexagon (Reverted to original structure) -->
+                            <div class="hex center-hex">
+                                DATA<br>PRIVACY<br>to<br>PROTECT YOUR FUTURE
+                            </div>
+
+                            <!-- Ribbons -->
+                            <div class="ribbon r1"></div>
+                            <div class="ribbon r2"></div>
+                            <div class="ribbon r3"></div>
+                            <div class="ribbon r4"></div>
+                            <div class="ribbon r5"></div>
+                            <div class="ribbon r6"></div>
+
+                            <!-- Outer Hexagons (Steps 1-6) -->
+                            
+                            <!-- Step 1 -->
+                            <div class="hex outer-hex pos-1">
+                                <div class="hex-number">1</div>
+                                <div class="hex-content">
+                                    <h4>IDENTIFY</h4>
+                                    <p>Review your current digital footprint and risks.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="hex outer-hex pos-2">
+                                <div class="hex-number">2</div>
+                                <div class="hex-content">
+                                    <h4>SECURE</h4>
+                                    <p>Use strong, unique passwords for all accounts.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="hex outer-hex pos-3">
+                                <div class="hex-number">3</div>
+                                <div class="hex-content">
+                                    <h4>VERIFY</h4>
+                                    <p>Enable Two-Factor Authentication (2FA).</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="hex outer-hex pos-4">
+                                <div class="hex-number">4</div>
+                                <div class="hex-content">
+                                    <h4>CONTROL</h4>
+                                    <p>Adjust social media privacy settings regularly.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 5 -->
+                            <div class="hex outer-hex pos-5">
+                                <div class="hex-number">5</div>
+                                <div class="hex-content">
+                                    <h4>UPDATE</h4>
+                                    <p>Keep software and antivirus solutions active.</p>
+                                </div>
+                            </div>
+
+                            <!-- Step 6 -->
+                            <div class="hex outer-hex pos-6">
+                                <div class="hex-number">6</div>
+                                <div class="hex-content">
+                                    <h4>MONITOR</h4>
+                                    <p>Check login activity for suspicious actions.</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- SAFETY PRACTICES (TEXT) -->
+                        <h3 style="margin-top: 80px; color: var(--neon-green);">Safety Practices</h3>
+                        <div style="background: rgba(10, 255, 10, 0.05); padding: 30px; border-radius: 10px; border: 1px solid var(--neon-green);">
+                            <ul>
+                                <li><strong>Regular Audits:</strong> Conduct a monthly audit of your connected apps and revoke access for services you no longer use.</li>
+                                <li><strong>Browsing Habits:</strong> Always look for "https://" in the URL bar before entering sensitive data. Avoid downloading attachments from unknown senders.</li>
+                                <li><strong>Device Security:</strong> Ensure your laptop and mobile devices are protected with strong PINs or biometrics.</li>
+                                <li><strong>Backup Data:</strong> Maintain regular backups of important data to protect against ransomware attacks.</li>
+                            </ul>
+                        </div>
+
+                        <!-- REAL-LIFE STORIES SECTION WITH SPECIFIC LINKS -->
+                        <h3>Real-Life Stories</h3>
+                        <div class="stories-grid">
+                            <a href="https://youtu.be/-_3bw-nRDAM?si=WdELiQreXhLutfh0n" target="_blank" class="story-card">
+                                <div class="story-media">
+                                    <img src="https://img.youtube.com/vi/-_3bw-nRDAM/hqdefault.jpg" alt="Data Breach Story">
+                                    <div class="play-overlay">
+                                        <div class="play-icon">▶</div>
+                                    </div>
+                                </div>
+                                <div class="story-content">
+                                    <span class="story-tag">Real Story</span>
+                                    <h4>The Facebook Breach</h4>
+                                    <p>Watch how a massive data leak exposed personal information of millions of users.</p>
+                                </div>
+                            </a>
+                            <a href="https://youtu.be/C03qnuFBhuY?si=dFOEE8vxQDx7eJgK" target="_blank" class="story-card">
+                                <div class="story-media">
+                                    <img src="https://img.youtube.com/vi/C03qnuFBhuY/hqdefault.jpg" alt="Cambridge Analytica Story">
+                                    <div class="play-overlay">
+                                        <div class="play-icon">▶</div>
+                                    </div>
+                                </div>
+                                <div class="story-content">
+                                    <span class="story-tag">Documentary</span>
+                                    <h4>Cambridge Analytica Scandal</h4>
+                                    <p>A deep dive into how data was weaponized to influence voter behavior.</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- NEW CASE STUDY SECTION -->
+                        <div class="case-study-box">
+                            <div class="case-study-title">
+                                <span>⚠️ CASE STUDY</span> University Credential Stuffing Attack
+                            </div>
+                            <p>In 2023, a major university experienced a targeted credential stuffing attack. Hackers utilized username and password combinations leaked from third-party breaches to gain access to student and staff email portals. Once inside, they scraped for sensitive research data and financial aid records. This case highlights the critical risk of <span class="highlight">password reuse</span> across different platforms and the absolute necessity of enabling <span class="highlight">Multi-Factor Authentication (MFA)</span> on educational accounts. It serves as a stark reminder that a breach on one site can compromise accounts on many others.</p>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 4: SURVEY === -->
+            <div id="survey" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Survey / Feedback</h2>
+                        <div class="survey-wrapper">
+                            <h3>Take the Full Survey</h3>
+                            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScInFpuoOsO8hKsikJ5PWmkWQqzWzuLUVdA63BAc6pWNIqYdA/viewform?embedded=true" width="100%" height="650px" frameborder="0" marginheight="0" marginwidth="0" style="border: 1px solid #ccc; background: white; border-radius: 4px;">Loading...</iframe>
+                        </div>
+                        <h3 style="margin-top: 50px; border-top: 1px solid #444; padding-top: 30px;">Additional Quick Assessment (10 Questions)</h3>
+                        <div class="polls-grid">
+                            <!-- 1 -->
+                            <div class="poll-question">
+                                <h4>1. Do you read Terms of Service?</h4>
+                                <div class="poll-option" onclick="vote(this, 15)">Yes, always <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 65)">No, just click Accept <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 20)">Sometimes <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 2 -->
+                            <div class="poll-question">
+                                <h4>2. Do you use same password everywhere?</h4>
+                                <div class="poll-option" onclick="vote(this, 10)">Yes, it's easier <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 60)">No, unique for each <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 30)">Variation of same <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 3 -->
+                            <div class="poll-question">
+                                <h4>3. Do you use 2-Factor Authentication (2FA)?</h4>
+                                <div class="poll-option" onclick="vote(this, 25)">Yes, on everything <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 50)">Only on banking <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 25)">What is 2FA? <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 4 -->
+                            <div class="poll-question">
+                                <h4>4. Do you use Public Wi-Fi for sensitive tasks?</h4>
+                                <div class="poll-option" onclick="vote(this, 40)">Yes, I need internet <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 60)">Never, I use data <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 5 -->
+                            <div class="poll-question">
+                                <h4>5. Have you ever clicked a suspicious email link?</h4>
+                                <div class="poll-option" onclick="vote(this, 30)">Yes, once <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 10)">Yes, multiple times <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 60)">No, never <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 6 -->
+                            <div class="poll-question">
+                                <h4>6. Do you share your live location on social media?</h4>
+                                <div class="poll-option" onclick="vote(this, 55)">Only with friends <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 15)">Publicly <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 30)">Never turn it on <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 7 -->
+                            <div class="poll-question">
+                                <h4>7. Do you check app permissions before installing?</h4>
+                                <div class="poll-option" onclick="vote(this, 10)">Always <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 80)">Never, just install <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 10)">Sometimes <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 8 -->
+                            <div class="poll-question">
+                                <h4>8. Do you use a VPN?</h4>
+                                <div class="poll-option" onclick="vote(this, 15)">Yes, regularly <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 25)">Only for free stuff <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 60)">No <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 9 -->
+                            <div class="poll-question">
+                                <h4>9. Do you keep your software/apps updated?</h4>
+                                <div class="poll-option" onclick="vote(this, 70)">Auto-update is on <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 30)">I ignore updates <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                            <!-- 10 -->
+                            <div class="poll-question">
+                                <h4>10. How concerned are you about your data?</h4>
+                                <div class="poll-option" onclick="vote(this, 20)">Not at all <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 50)">Somewhat <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                                <div class="poll-option" onclick="vote(this, 30)">Very concerned <div class="progress-bar"><div class="progress-fill"></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 5: MEDIA GALLERY === -->
+            <div id="media" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Media Gallery</h2>
+                        <p>Explore our curated collection of educational videos, infographics, and awareness posters focused on Social Media Privacy.</p>
+
+                        <!-- SECTION 1: VIDEOS -->
+                        <div class="gallery-section">
+                            <h3>Featured Educational Videos</h3>
+                            <div class="media-grid">
+                                <!-- Video 1 -->
+                                <a href="https://www.youtube.com/watch?v=3YIPQrEWOeY" target="_blank" class="media-item">
+                                    <div class="media-preview">
+                                        <img src="https://img.youtube.com/vi/3YIPQrEWOeY/hqdefault.jpg" alt="What is Data Privacy">
+                                        <div class="play-overlay"><div class="play-icon">▶</div></div>
+                                    </div>
+                                    <div class="media-info">
+                                        <div class="media-type">Video Tutorial</div>
+                                        <div class="media-title">What is Data Privacy?</div>
+                                        <div class="media-desc">Understanding fundamentals of keeping your personal information secure in digital world.</div>
+                                    </div>
+                                </a>
+                                <!-- Video 2 -->
+                                <a href="https://youtu.be/EYbO_JL4_hc?si=Yj8y28SYWbTuMP9U" target="_blank" class="media-item">
+                                    <div class="media-preview">
+                                        <img src="https://img.youtube.com/vi/EYbO_JL4_hc/hqdefault.jpg" alt="How to Protect Your Data">
+                                        <div class="play-overlay"><div class="play-icon">▶</div></div>
+                                    </div>
+                                    <div class="media-info">
+                                        <div class="media-type">Video Tutorial</div>
+                                        <div class="media-title">How to Protect Your Data</div>
+                                        <div class="media-desc">Essential steps and tools you can use to safeguard your data from hackers and trackers.</div>
+                                    </div>
+                                </a>
+                                <!-- Video 4 (Originally Video 4) -->
+                                <a href="https://youtu.be/w_QdpSryyUE?si=xbvl08GIQ-u377el" target="_blank" class="media-item">
+                                    <div class="media-preview">
+                                        <img src="https://img.youtube.com/vi/w_QdpSryyUE/hqdefault.jpg" alt="Social Media Privacy Settings">
+                                        <div class="play-overlay"><div class="play-icon">▶</div></div>
+                                    </div>
+                                    <div class="media-info">
+                                        <div class="media-type">Video Tutorial</div>
+                                        <div class="media-title">Social Media Privacy Settings</div>
+                                        <div class="media-desc">Step-by-step guide on securing your Facebook, Instagram, and Twitter profiles.</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: CLIPPINGS (UPDATED WITH 7 NEW ARTICLES) -->
+                        <div class="gallery-section">
+                            <h3>News Clippings & Reports</h3>
+                            
+                            <div class="clipping-slideshow-container" id="clippingContainer">
+                                <!-- ZOOM CONTROLS -->
+                                <div class="zoom-controls">
+                                    <button class="zoom-btn" onclick="changeClippingZoom(-0.1)">-</button>
+                                    <span id="clipping-zoom-display" class="zoom-level">100%</span>
+                                    <button class="zoom-btn" onclick="changeClippingZoom(0.1)">+</button>
+                                </div>
+
+                                <!-- Clipping 1: Cybercrime Thrives -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>1. Crime Thrives Online</h2>
+                                        <ul>
+                                            <li><strong>Topic:</strong> Rising Cybercrime vs. Convictions</li>
+                                            <li><strong>Key Stat:</strong> In 2017, there were 4035 cybercrime cases but only 2 convictions.</li>
+                                            <li><strong>Issue:</strong> Manpower and training shortages in law enforcement.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/1664752c-8d78-498c-b6bc-7ef74b198af2.jpeg?auth_key=1871652970-06b4c923cbf74fb6a56d24a72d5d3d54-0-bcd5c8ffe53681a7850b021986b3717e" alt="Crime thrives online">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 2: WhatsApp Fined -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>2. WhatsApp Record Fine</h2>
+                                        <ul>
+                                            <li><strong>Agency:</strong> Ireland's Privacy Watchdog (DPC)</li>
+                                            <li><strong>Penalty:</strong> £193m fine for EU data breach.</li>
+                                            <li><strong>Reason:</strong> Violation of EU data protection regulations regarding transparency.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/4888c74b-5caf-4e74-9c01-46b8be905f64.jpeg?auth_key=1871652970-9b3a1f6b5c194ed381af1814923639e8-0-5864d4801b74ddc3d288bb96bb1a4af6" alt="WhatsApp fine">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 3: Investors' Data Leaked -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>3. Investment Fraud Alert</h2>
+                                        <ul>
+                                            <li><strong>Location:</strong> Ludhiana</li>
+                                            <li><strong>Crime:</strong> Fake stock apps used to lure investors.</li>
+                                            <li><strong>Impact:</strong> Losses of Rs 1.40 crore reported; investors' data leaked to cyber cons.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/770fa64e-4c99-49e0-bafe-daaf6b34e9ca.jpeg?auth_key=1871652970-7765112bd12a4508b9d34ba2724af7d4-0-bf17bad273b817ebbafd60b378c0a2c3" alt="Investment Fraud">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 4: Google Investigation -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>4. Google Under Scrutiny</h2>
+                                        <ul>
+                                            <li><strong>Action:</strong> Data watchdog opens investigation.</li>
+                                            <li><strong>Focus:</strong> Data handling practices.</li>
+                                            <li><strong>Context:</strong> Increasing regulatory pressure on tech giants.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/19475153-f18f-486c-9b7b-097530bb9522.jpeg?auth_key=1871652970-86793cbb1ec44f1cb2a553ea2995b4a9-0-6145f01d9c5d7c651d52ce35d5c48dc9" alt="Google Investigation">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 5: Internet Privacy -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>5. Privacy on the Internet</h2>
+                                        <ul>
+                                            <li><strong>Challenge:</strong> Maintaining anonymity online.</li>
+                                            <li><strong>Risk:</strong> Advertisers tracking habits and monitoring activity.</li>
+                                            <li><strong>Case:</strong> Electronic Privacy Information Center vs. DoubleClick.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/b09f3378-28b7-4fc3-b06f-16ebbc422f52.jpeg?auth_key=1871652970-d8fef011a5334065b66185d2403e1a5b-0-bb431231e307a797613b9db3ff6073ed" alt="Privacy on the Internet">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 6: Cybercrime Terrorism -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>6. Cybercrime = Terrorism</h2>
+                                        <ul>
+                                            <li><strong>Source:</strong> Lokmat Times</li>
+                                            <li><strong>Context:</strong> India has many users but lagging security.</li>
+                                            <li><strong>Severity:</strong> 320k debt/credit card cases; threat equated to terrorism.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/bc10f12f-29a0-4999-800a-79b31f274d46.jpeg?auth_key=1871652970-1c786be0c34441baa8242df7566d3cd3-0-5fbf75012f69b5de7eaa8213c85860a3" alt="Cybercrime Terrorism">
+                                    </div>
+                                </div>
+
+                                <!-- Clipping 7: TikTok Congress -->
+                                <div class="clipping-slide">
+                                    <div class="clipping-slide-content">
+                                        <h2>7. TikTok Ban Threat</h2>
+                                        <ul>
+                                            <li><strong>Event:</strong> CEO Shou Zi Chew grilled in Congress.</li>
+                                            <li><strong>Issue:</strong> Data privacy concerns and Chinese ownership.</li>
+                                            <li><strong>Outcome:</strong> App faces potential complete ban in the US.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clipping-slide-image">
+                                        <img src="https://z-cdn-media.chatglm.cn/files/8d7aa619-786c-4a5a-a5b4-4fbdd3c0a145.jpeg?auth_key=1871652970-37a75cce04a34d4fa3fcc75a1cd59eb9-0-f1a3cf35be04934b559f130cc8aace3f" alt="TikTok Congress">
+                                    </div>
+                                </div>
+
+                                <!-- Navigation Arrows -->
+                                <a class="clipping-prev" onclick="changeClippingSlide(-1)">&#10094;</a>
+                                <a class="clipping-next" onclick="changeClippingSlide(1)">&#10095;</a>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 3: AWARENESS POSTERS (INTERACTIVE SLIDESHOW) WITH ORIGINAL IMAGES -->
+                        <div class="gallery-section">
+                            <h3>Social Media Awareness Posters</h3>
+                            
+                            <div class="poster-slideshow-container">
+                                <!-- Slide 1 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>1. Physical Security</h2>
+                                        <ul>
+                                            <li><strong>Be Cautious with Office Waste:</strong> Trash may contain important information.</li>
+                                            <li>Avoid throwing sensitive documents into standard waste bags.</li>
+                                            <li>Always ensure physical media is securely destroyed.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 6 (Office Waste) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/4d91b828-91f7-4eec-9ee3-af7948406f96.jpeg?auth_key=1871644390-3368127ee27b4edfb86536cb1098b8ea-0-5c8fef29e5bf6a38d01e1196214bcdd4" alt="Physical Security Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Slide 2 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>2. Digital Citizenship</h2>
+                                        <ul>
+                                            <li><strong>Privacy:</strong> Keep private information private.</li>
+                                            <li><strong>Passwords:</strong> Use passwords and protect them.</li>
+                                            <li><strong>Think Before You Click:</strong> Be mindful of your online actions.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 5 (Flow Chart) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/93aa53c7-7485-4814-af9b-79af8a349ec9.jpeg?auth_key=1871644390-530818731ca64b5daf0b3ff1293c6379-0-74785c4b09f567596555df92ace2148d" alt="Digital Citizenship Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Slide 3 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>3. Lock Down Your Login</h2>
+                                        <ul>
+                                            <li><strong>Multi-Factor Authentication:</strong> Add an extra layer of security.</li>
+                                            <li><strong>Unique Passwords:</strong> Do not reuse passwords for different sites.</li>
+                                            <li><strong>Login Notifications:</strong> Enable alerts to detect unauthorized access immediately.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 1 (Login) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/e2b2018f-dee6-4a77-a788-5c6cf4b7a51f.jpeg?auth_key=1871644390-62e83a0ca77a4fe198f46b642f125427-0-088a18b7b6aae8eae99ced8652f6c11f" alt="Login Security Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Slide 4 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>4. Online Data Protection</h2>
+                                        <ul>
+                                            <li><strong>Automatic Updates:</strong> Keep software current to patch vulnerabilities.</li>
+                                            <li><strong>Disaster Recovery:</strong> Have a plan for data loss.</li>
+                                            <li><strong>Anti-Spyware:</strong> Protect against malicious spying software.</li>
+                                            <li><strong>Universal File Access:</strong> Securely access files from anywhere.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 2 (Data Protection) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/75c84e53-72f3-48e7-af72-ad33733933f6.jpeg?auth_key=1871644390-b021ed8444034bbbbb1668de86ef1e5d-0-d0196e2acdbdb8084d47edc0ed8b65ce" alt="Online Data Protection Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Slide 5 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>5. Protect Personal Info</h2>
+                                        <p style="font-style: italic; color: #00f3ff;">"Your Personal Information is Valuable: Protect It"</p>
+                                        <br>
+                                        <ul>
+                                            <li><strong>Give Your Phone a Fresh Start:</strong> Disguise your phone name.</li>
+                                            <li><strong>Spruce Up Your Social:</strong> Toss out those old apps you don't use.</li>
+                                            <li>Clean up your digital footprint regularly.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 3 (Personal Info) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/57b84a7e-4791-4555-9547-2f447d3b12e1.jpeg?auth_key=1871644390-5db3bb55f2d04bfba27ea72c87bde61f-0-941e003891c2694462276ef92de43974" alt="Protect Personal Info Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Slide 6 -->
+                                <div class="poster-slide">
+                                    <div class="poster-slide-content">
+                                        <h2>6. General Awareness</h2>
+                                        <ul>
+                                            <li><strong>Report Suspicious Activity:</strong> Immediately notify IT of any odd behavior.</li>
+                                            <li><strong>Lock Your Screen:</strong> Always lock your workstation when stepping away.</li>
+                                            <li><strong>Stay Informed:</strong> Keep up to date with latest security policies.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="poster-slide-image">
+                                        <!-- ORIGINAL IMAGE 4 (Data Privacy Day) -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/2f9a398a-8181-4113-93a1-9f5f45c2fda7.jpeg?auth_key=1871644390-b57236aed73e4146964a7cb620492def-0-67d89304197618faa52cc98b5727048d" alt="General Awareness Poster">
+                                    </div>
+                                </div>
+
+                                <!-- Navigation Arrows -->
+                                <a class="poster-prev" onclick="changePosterSlide(-1)">&#10094;</a>
+                                <a class="poster-next" onclick="changePosterSlide(1)">&#10095;</a>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 6: ADVANCED INTERACTIVE CHATBOT (WITH WORKING 10 FAQs) === -->
+            <div id="chatbot" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>AI Privacy Assistant</h2>
+                        <p style="text-align: center;">Advanced security protocols loaded. Ask me anything about digital safety, or use the quick commands below.</p>
+
+                        <div class="chatbot-container">
+                            <div class="chatbot-header">
+                                <div class="bot-status">
+                                    <div class="status-dot"></div>
+                                    <span>PRIVACY BOT v2.0 (Advanced)</span>
+                                </div>
+                                <span style="font-size: 0.8rem; color: #888;">ID: #884-SECURE</span>
+                            </div>
+                            
+                            <div class="chatbot-messages" id="bot-messages">
+                                <div class="message bot-msg">
+                                    <span class="message-content">System Initialized. I am your advanced Privacy Assistant. <br><br>I can help with <strong>phishing detection</strong>, <strong>password security</strong>, <strong>GDPR rights</strong>, or <strong>data breach</strong> response.</span>
+                                    <span class="message-time">Just now</span>
+                                </div>
+                                
+                                <!-- Typing Indicator inside message container -->
+                                <div class="typing-indicator" id="typing-indicator">
+                                    <div class="dot"></div>
+                                    <div class="dot"></div>
+                                    <div class="dot"></div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Replies -->
+                            <div class="quick-replies">
+                                <div class="chip" onclick="handleQuickReply('What is Phishing?')">What is Phishing?</div>
+                                <div class="chip" onclick="handleQuickReply('How to create a strong password?')">Strong Password</div>
+                                <div class="chip" onclick="handleQuickReply('What is 2FA?')">What is 2FA?</div>
+                                <div class="chip" onclick="handleQuickReply('Report a data breach')">Report Breach</div>
+                                <div class="chip" onclick="handleQuickReply('Is public wifi safe?')">Public WiFi Safety</div>
+                                <div class="chip" style="background: rgba(255, 215, 0, 0.1); border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="handleQuickReply('Show FAQs')">Show FAQs (10)</div>
+                            </div>
+
+                            <div class="chatbot-input-area">
+                                <input type="text" id="bot-input" class="chat-input" placeholder="Ask a security question..." onkeypress="handleEnter(event)">
+                                <button class="send-btn" onclick="processUserMessage()">SEND</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 7: ADVANCED COMMUNITY FORUM === -->
+            <div id="community" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Community Forum</h2>
+                        
+                        <!-- ADVANCED TABS -->
+                        <div class="forum-tabs">
+                            <button class="forum-tab-btn active" onclick="switchForumTab('intro')">Introduction</button>
+                            <button class="forum-tab-btn" onclick="switchForumTab('discuss')">Discussion Board & Ask Questions</button>
+                        </div>
+
+                        <div class="forum-layout">
+                            <div class="forum-sidebar">
+                                <!-- Tab 1 Content: Introduction -->
+                                <div id="tab-intro" class="forum-content-panel active">
+                                    <h3 style="color: var(--neon-pink);">Welcome to Secure Forum</h3>
+                                    <p>This is a safe space for students to discuss data privacy issues, share experiences, and ask questions.</p>
+                                    <div style="background: rgba(0, 243, 255, 0.05); padding: 15px; border-left: 3px solid var(--neon-blue); margin-bottom: 20px;">
+                                        <strong>Guidelines:</strong><br>
+                                        1. Do not share personal PII.<br>
+                                        2. Be respectful to other members.<br>
+                                        3. Report suspicious activity immediately.
+                                    </div>
+                                    <p>Click on the <strong>"Discussion Board"</strong> tab above to start posting your questions and experiences.</p>
+                                </div>
+
+                                <!-- Tab 2 Content: Input & Stats (Visible in Discussion mode) -->
+                                <div id="tab-discuss-controls" class="forum-content-panel" style="display:none;">
+                                    <h3 style="color: var(--neon-pink);">Quick FAQ</h3>
+                                    <div class="faq-container">
+                                        <details>
+                                            <summary>1. What is a data breach?</summary>
+                                            <div class="faq-answer">A data breach is a security incident where information is accessed without authorization.</div>
+                                        </details>
+                                        <details>
+                                            <summary>2. Is public Wi-Fi safe?</summary>
+                                            <div class="faq-answer">Not always. Use a VPN when banking on public networks.</div>
+                                        </details>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="forum-main">
+                                <!-- Tab 1 Content (Main Area for Intro) -->
+                                <div id="tab-intro-main" class="forum-content-panel active">
+                                    <h4 style="color: var(--neon-blue);">⚡ Why Join?</h4>
+                                    <p>Joining our community helps you stay updated on latest threats. Connect with peers and learn from real-world scenarios.</p>
+                                    <div style="margin-top:20px; text-align:center;">
+                                        <button class="send-btn" onclick="switchForumTab('discuss')">Go to Discussion Board</button>
+                                    </div>
+                                </div>
+
+                                <!-- Tab 2 Content: Posts Feed -->
+                                <div id="tab-discuss-feed" class="forum-content-panel" style="display:none;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                                        <h4 style="color: var(--neon-blue); margin:0;">Live Discussions</h4>
+                                        <div style="font-size:0.8rem; color: var(--neon-green);">● 24 Users Online</div>
+                                    </div>
+
+                                    <!-- === NEW: BLOG DISCUSSION SECTION === -->
+                                    <div class="forum-post-card blog-embed-card">
+                                        <div class="post-content-area" style="width: 100%;">
+                                            <div class="post-header">
+                                                <div class="post-user-info">
+                                                    <div class="post-avatar" style="background: var(--neon-pink); display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">📝</div>
+                                                    <div>
+                                                        <div class="post-username" style="color: var(--neon-pink);">Featured Blog Post</div>
+                                                        <div class="post-meta">Read the source material below and discuss</div>
+                                                    </div>
+                                                </div>
+                                                <a href="https://patelsahil9024.blogspot.com/2026/02/data-privacy-among-college-students.html" target="_blank" class="send-btn" style="padding: 5px 15px; font-size: 0.8rem; text-decoration: none;">OPEN IN NEW TAB</a>
+                                            </div>
+                                            
+                                            <!-- Embed Area -->
+                                            <div class="blog-embed-container">
+                                                <iframe src="https://patelsahil9024.blogspot.com/2026/02/data-privacy-among-college-students.html" 
+                                                        style="width: 100%; height: 600px; border: none;" 
+                                                        title="Data Privacy Blog">
+                                                </iframe>
+                                            </div>
+                                            <p style="margin-top: 15px; font-size: 0.9rem; color: #888; text-align: center;">
+                                                <em>👇 Discuss the findings from the blog above using the input box below.</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!-- === END BLOG SECTION === -->
+
+                                    <div id="community-feed">
+                                        <!-- Initial Post -->
+                                        <div class="forum-post-card">
+                                            <div class="post-vote-box">
+                                                <button class="vote-btn">▲</button>
+                                                <span class="vote-count">12</span>
+                                                <button class="vote-btn">▼</button>
+                                            </div>
+                                            <div class="post-content-area">
+                                                <div class="post-header">
+                                                    <div class="post-user-info">
+                                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="post-avatar" alt="User">
+                                                        <div>
+                                                            <div class="post-username">CyberSarah</div>
+                                                            <div class="post-meta">2 hours ago</div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="post-tag">Phishing</span>
+                                                </div>
+                                                <p>Just saw a very realistic phishing email pretending to be from university IT department. Always check the sender's email address carefully!</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- === ADDED 3 COMMENTS BELOW === -->
+                                        
+                                        <!-- New Comment 1 -->
+                                        <div class="forum-post-card">
+                                            <div class="post-vote-box">
+                                                <button class="vote-btn">▲</button>
+                                                <span class="vote-count">8</span>
+                                                <button class="vote-btn">▼</button>
+                                            </div>
+                                            <div class="post-content-area">
+                                                <div class="post-header">
+                                                    <div class="post-user-info">
+                                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="post-avatar" alt="User">
+                                                        <div>
+                                                            <div class="post-username">PrivacyPro_22</div>
+                                                            <div class="post-meta">1 hour ago</div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="post-tag">Social Media</span>
+                                                </div>
+                                                <p>The blog really opened my eyes about the permissions we blindly accept. I'm going to audit my apps tonight and turn off location sharing for the ones that don't actually need it!</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- New Comment 2 -->
+                                        <div class="forum-post-card">
+                                            <div class="post-vote-box">
+                                                <button class="vote-btn">▲</button>
+                                                <span class="vote-count">5</span>
+                                                <button class="vote-btn">▼</button>
+                                            </div>
+                                            <div class="post-content-area">
+                                                <div class="post-header">
+                                                    <div class="post-user-info">
+                                                        <img src="https://randomuser.me/api/portraits/women/65.jpg" class="post-avatar" alt="User">
+                                                        <div>
+                                                            <div class="post-username">SafeSurfer</div>
+                                                            <div class="post-meta">45 mins ago</div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="post-tag">Question</span>
+                                                </div>
+                                                <p>I agree with the point about weak passwords. However, does anyone have a recommendation for a secure password manager? I find it hard to remember unique passwords for every account.</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- New Comment 3 -->
+                                        <div class="forum-post-card">
+                                            <div class="post-vote-box">
+                                                <button class="vote-btn">▲</button>
+                                                <span class="vote-count">15</span>
+                                                <button class="vote-btn">▼</button>
+                                            </div>
+                                            <div class="post-content-area">
+                                                <div class="post-header">
+                                                    <div class="post-user-info">
+                                                        <img src="https://randomuser.me/api/portraits/men/85.jpg" class="post-avatar" alt="User">
+                                                        <div>
+                                                            <div class="post-username">VigilantStudent</div>
+                                                            <div class="post-meta">30 mins ago</div>
+                                                        </div>
+                                                    </div>
+                                                    <span class="post-tag">Experience</span>
+                                                </div>
+                                                <p>I recently realized my phone was tracking my location history even when I wasn't using maps. Turning that off in the settings made a huge difference in my peace of mind. Highly recommended!</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- === END OF NEW COMMENTS === -->
+
+                                    </div>
+
+                                    <!-- Input Area -->
+                                    <div class="input-area">
+                                        <input type="text" id="user-input" class="chat-input" placeholder="Share your experience or ask a question...">
+                                        <button class="send-btn" onclick="postComment()">POST</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 8: RESOURCES / LINKS === -->
+            <div id="resources" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Resources & Links</h2>
+                        <p>Essential portals, helplines, and learning materials to stay safe and informed.</p>
+
+                        <div class="resources-grid">
+                            <!-- GOVERNMENT -->
+                            <div class="resource-category">
+                                <span class="resource-icon">🏛️</span>
+                                <h3>Government & Legal</h3>
+                                <a href="https://www.cert-in.org.in/" target="_blank" class="resource-link">CERT-In (India)</a>
+                                <a href="https://cybercrime.gov.in/" target="_blank" class="resource-link">National Cyber Crime Portal</a>
+                                <a href="https://www.meity.gov.in/" target="_blank" class="resource-link">Ministry of Electronics & IT</a>
+                                <a href="https://gdpr.eu/" target="_blank" class="resource-link">GDPR Official (EU)</a>
+                                <a href="https://www.ftc.gov/" target="_blank" class="resource-link">FTC (USA Consumer Info)</a>
+                            </div>
+                            <!-- HELPLINES -->
+                            <div class="resource-category">
+                                <span class="resource-icon">🚨</span>
+                                <h3>Helplines & Reporting</h3>
+                                <a href="tel:1930" class="resource-link">Cyber Crime Helpline: 1930</a>
+                                <a href="https://www.cybercrime.gov.in/AcceptanceOfComplaint.html" target="_blank" class="resource-link">File a Cyber Complaint</a>
+                                <a href="https://www.meity.gov.in/content/report-cyber-crime-incidents" target="_blank" class="resource-link">Report Incidents to CERT-In</a>
+                                <a href="https://www.consumercomplaints.in/" target="_blank" class="resource-link">Consumer Complaints (India)</a>
+                            </div>
+                            <!-- LEARNING -->
+                            <div class="resource-category">
+                                <span class="resource-icon">🎓</span>
+                                <h3>Learning & Tools</h3>
+                                <a href="https://www.coursera.org/browse/cyber-security" target="_blank" class="resource-link">Coursera Cybersecurity</a>
+                                <a href="https://www.khanacademy.org/computing/computer-programming/cryptography" target="_blank" class="resource-link">Khan Academy: Cryptography</a>
+                                <a href="https://haveibeenpwned.com/" target="_blank" class="resource-link">Have I Been Pwned?</a>
+                                <a href="https://support.google.com/accounts/answer/6010255" target="_blank" class="resource-link">Google Security Checkup</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 9: ABOUT ME === -->
+            <div id="about" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>About Me</h2>
+                        <div class="profile-header">
+                            <!-- UPDATED: Profile Photo (Using the file provided) -->
+                            <div class="modern-qr-wrapper">
+                                <div class="qr-image-container">
+                                    <!-- UPDATED: Image source changed to the specific URL requested -->
+                                    <img src="https://z-cdn-media.chatglm.cn/files/5f2a419e-a4d3-4744-9ed9-325fd9c7eee6.jpg?auth_key=1870567609-3e387fcbeeab4694a563ef45aa6811b5-0-d666e737d740bdacb3d45215e5626dc4" alt="Mr. Sahil Patel">
+                                </div>
+                            </div>
+
+                            <div class="profile-info">
+                                <h2>Mr. Sahil Sahablal Patel</h2>
+                                <p class="profile-role">Aspiring Cyber Security Specialist</p>
+                                <p class="profile-bio">I am currently pursuing my B.Sc. in Information Technology at Mansi Bharat Gada Degree College. I built this project to bridge the gap between technical jargon and student awareness.</p>
+                            </div>
+                        </div>
+                        <h3 style="margin-top: 30px;">Technical Skills</h3>
+                        <div class="skills-grid">
+                            <span class="skill-tag">HTML5 / CSS3</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Cyber Security Basics</span>
+                        </div>
+                        <div class="quote-box">
+                            <p>"In a world where data is the new oil, privacy is the refining process. We must choose to be the refineries, not the crude oil."</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- === PAGE 10: CONTACT === -->
+            <div id="contact" class="page-section">
+                <section>
+                    <div class="container">
+                        <h2>Contact</h2>
+                        <div class="contact-wrapper" style="display: flex; gap: 40px; flex-wrap: wrap; justify-content: center;">
+                            
+                            <!-- UPDATED: Custom QR Code Container -->
+                            <div class="modern-qr-wrapper">
+                                <div class="qr-image-container">
+                                    <!-- UPDATED: Using the specific high-quality QR Code URL requested -->
+                                    <img src="https://z-cdn-media.chatglm.cn/files/e90c2d6d-caf2-4229-a3e4-e2e185927a67.jpg?auth_key=1871848072-9df703cfc91f4847a9402561fb4fa245-0-3c4f8f12815be6e8c6b323eb1745faae" alt="QR Code">
+                                </div>
+                                <div class="scan-me-btn" onclick="window.location.href='#about'">
+                                    <div class="scan-icon-circle">
+                                        <!-- SVG Icon for QR/Scan -->
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v2h-2v-2zm3 3h3v5h-3v-5zm-3 0h2v5h-2v-2zM5 15h2v2H5v-2z"/>
+                                        </svg>
+                                    </div>
+                                    <span class="scan-text">SCAN ME</span>
+                                </div>
+                            </div>
+
+                            <div class="contact-card">
+                                <div style="color: white;">
+                                    <h3 style="margin: 0 0 15px 0; color: #0277bd;">Mr. Sahil Sahablal Patel</h3>
+                                    <p style="margin: 8px 0; color: #455a64;"><strong>Project:</strong> Awareness of Data Privacy</p>
+                                    <p style="margin: 8px 0; color: #455a64;"><strong>Email:</strong> <a href="mailto:patelsahil9024@gmail.com" style="color:var(--neon-blue)">patelsahil9024@gmail.com</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+    </div>
+
+    <footer style="text-align: center; padding: 20px; background: #020406; border-top: 1px solid #333; color: #666; font-size: 0.8rem;">
+        <p>&copy; 2025 Data Privacy Awareness Project. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- 1. MATRIX RAIN & GRID ---
+        const matrixBg = document.getElementById('matrixBg');
+        const colors = ['#0aff0a', '#00f3ff', '#bc13fe']; 
+        const columns = 30;
+
+        for(let i = 0; i < columns; i++) {
+            const column = document.createElement('div');
+            column.classList.add('matrix-column');
+            column.style.left = (i * 3.5) + '%';
+            column.style.color = colors[Math.floor(Math.random() * colors.length)];
+            let text = '';
+            for(let j = 0; j < 30; j++) text += Math.round(Math.random()) + '<br>';
+            column.innerHTML = text;
+            column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            column.style.opacity = Math.random() * 0.5 + 0.1;
+            matrixBg.appendChild(column);
+        }
+
+        // --- 2. TYPEWRITER SUBTITLE ---
+        const textElement = document.getElementById('typewriter');
+        const phrases = ["PROTECT YOUR IDENTITY", "SECURE YOUR FUTURE", "THINK BEFORE YOU CLICK"];
+        let phraseIndex = 0, charIndex = 0, isDeleting = false;
+
+        function type() {
+            if(!textElement) return;
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let typeSpeed = isDeleting ? 50 : 100;
+            if (!isDeleting && charIndex === currentPhrase.length) { typeSpeed = 2000; isDeleting = true; } 
+            else if (isDeleting && charIndex === 0) { isDeleting = false; phraseIndex = (phraseIndex + 1) % phrases.length; typeSpeed = 500; }
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+        // --- 3. NAVIGATION ---
+        let chartInitialized = false;
+        let myChart = null;
+        let xyChartInitialized = false;
+
+        function navigate(event, pageId) {
+            if(event) event.preventDefault();
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if(event) event.currentTarget.classList.add('active');
+            
+            window.scrollTo(0, 0);
+            // FIX: Delay chart initialization to ensure the container is visible and has dimensions
+            if(pageId === 'research') {
+                setTimeout(() => {
+                    initChart();
+                    initXYChart();
+                }, 50); // 50ms delay allows the DOM to update display:block before drawing
+            }
+        }
+
+        // --- 4. CHART JS (Existing) ---
+        function initChart() {
+            if(chartInitialized) return;
+            const ctx = document.getElementById('awarenessChart');
+            if(!ctx) return;
+            
+            const gradientBlue = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            gradientBlue.addColorStop(0, '#00f3ff');
+            gradientBlue.addColorStop(1, 'rgba(0, 243, 255, 0.1)');
+
+            const gradientPink = ctx.getContext('2d').createLinearGradient(0, 0, 0, 400);
+            gradientPink.addColorStop(0, '#bc13fe');
+            gradientPink.addColorStop(1, 'rgba(188, 19, 254, 0.1)');
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Social Media', 'Online Shopping', 'Apps', 'Education Platforms'],
+                    datasets: [{
+                        label: 'Awareness Level (%)',
+                        data: [40, 55, 45, 60],
+                        backgroundColor: [gradientBlue, gradientPink, gradientBlue, gradientPink],
+                        borderColor: ['#00f3ff', '#bc13fe', '#00f3ff', '#bc13fe'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { grid: { color: '#333' }, ticks: { color: '#ccc' } },
+                        x: { grid: { display: false }, ticks: { color: '#ccc' } }
+                    },
+                    plugins: { legend: { labels: { color: '#fff' } } },
+                    animation: { duration: 2000, easing: 'easeOutQuart' }
+                }
+            });
+            chartInitialized = true;
+        }
+
+        // --- 5. NEW X-Y AXIS CHART LOGIC (FROM PROVIDED SOURCE) ---
+        const xyQuestions = [
+            "Understanding of Data Privacy",
+            "Concerned - Social Media",
+            "Concerned - Online Shopping",
+            "Concerned - University",
+            "Concerned - App Developers",
+            "Concerned - Govt Agencies",
+            "Willing to Share Personal Data",
+            "Comfortable with University AI",
+            "Feel about Selling Profile to Advertisers",
+            "Experienced Data Breach?"
+        ];
+
+        const xyRawData = [
+            ["Patel Karan", "Yes", "No", "No", "No", "Yes", "No", "No", "No", "No", "Yes", "No"],
+            ["Rohit", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "No"],
+            ["Rashi malde", "Yes", "No", "No", "No", "No", "No", "No", "No", "No", "No"],
+            ["Himanshu", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "No"],
+            ["Ansari zainab waseem", "Yes", "No", "Yes", "No", "No", "No", "No", "Yes", "No", "Yes", "No"],
+            ["Om", "Yes", "No", "No", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
+            ["Aditya Singha", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "No"],
+            ["Soni jash", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Mahi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Satyam prajapati", "Yes", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Ankita Manjhi", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Patel kiran", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No"],
+            ["Patel karan", "Yes", "Yes", "No", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Nandani Gupta", "Yes", "Yes", "Yes", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["AYUSH krishna", "Yes", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "No"],
+            ["Shaikh Bushra", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "No"],
+            ["Harshwardhan Deepak Hire", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Ansari Arbiya Nisar Ahmed", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "No", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Vanshika Chandu Nayak", "Yes", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "No"],
+            ["Komal Saheblal Yadav", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Komal Pandit", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes"],
+            ["Samay", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No"],
+            ["Karthik Ette", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Amanjain", "Yes", "No", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Nair Vignesh", "Yes", "Yes", "Yes", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Sidhu pallor", "Yes", "No", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Akhil", "No", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Pillai Sidhu", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Arun", "Yes", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Ganesh Choudhary", "Yes", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
+            ["Priti Pratap Soni", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Goli sneha Naresh", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Rajesh gaddam", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["CHERYALA MEENAL", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Kajal soni", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Jyoti ranjeet umate", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Bhavnesh", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Sushmitha Ekkaldevi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Ette Gagana Eshwar", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Soumdeep", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["raju", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Rakshitapenta", "No", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Swetha choutapelli", "Yes", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
+            ["V.Mahendhar", "Yes", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Aarshika chenna", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Choutapelli Laya Sriniwas", "No", "Yes", "Yes", "Yes", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
+            ["Prince Tiwari", "No", "No", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"]
+        ];
+
+        function processXYData() {
+            const yesCounts = new Array(10).fill(0);
+            xyRawData.forEach(person => {
+                for (let i = 0; i < 10; i++) {
+                    let answer = person[i + 1];
+                    if (!answer) {
+                        const randomVal = Math.random() > 0.5 ? "Yes" : "No";
+                        answer = randomVal;
+                    }
+                    if (answer === "Yes") {
+                        yesCounts[i]++;
+                    }
+                }
+            });
+            return yesCounts.map(count => (count / xyRawData.length) * 100);
+        }
+
+        const xyCanvas = document.getElementById('xyCanvas');
+        const xyCtx = xyCanvas ? xyCanvas.getContext('2d') : null;
+        let xyPercentages = [];
+        let xyAnimationProgress = 0;
+        let xyAnimationId = null;
+        let xyMouseX = 0;
+        let xyMouseY = 0;
+        let xyHoveredBarIndex = -1;
+
+        const xyPadding = 60;
+        const xyChartWidth = xyCanvas.width - (xyPadding * 2);
+        const xyChartHeight = xyCanvas.height - (xyPadding * 2);
+        const xyBarWidth = 40;
+        const xyNumBars = 10;
+        const xyGap = (xyChartWidth - (xyNumBars * xyBarWidth)) / (xyNumBars + 1);
+
+        function initXYChart() {
+            if(xyChartInitialized) return;
+            if(!xyCtx) return;
+            
+            xyPercentages = processXYData();
+            startXYAnimation();
+            xyChartInitialized = true;
+        }
+
+        function startXYAnimation() {
+            if (xyAnimationId) cancelAnimationFrame(xyAnimationId);
+            xyAnimationProgress = 0;
+            animateXY();
+        }
+
+        function animateXY() {
+            drawXY();
+            if (xyAnimationProgress < 1) {
+                xyAnimationProgress += 0.015;
+                if (xyAnimationProgress > 1) xyAnimationProgress = 1;
+                xyAnimationId = requestAnimationFrame(animateXY);
+            }
+        }
+
+        if(xyCanvas) {
+            xyCanvas.addEventListener('mousemove', (e) => {
+                const rect = xyCanvas.getBoundingClientRect();
+                const scaleX = xyCanvas.width / rect.width;
+                const scaleY = xyCanvas.height / rect.height;
+                xyMouseX = (e.clientX - rect.left) * scaleX;
+                xyMouseY = (e.clientY - rect.top) * scaleY;
+                checkXYHover();
+                if (xyAnimationProgress >=1) drawXY();
+            });
+        }
+
+        function checkXYHover() {
+            let found = -1;
+            for (let i = 0; i < xyNumBars; i++) {
+                const x = xyPadding + xyGap + (i * (xyBarWidth + xyGap));
+                const targetHeight = (xyPercentages[i] / 100) * xyChartHeight;
+                const barTop = (xyCanvas.height - xyPadding) - targetHeight;
+                const barBottom = xyCanvas.height - xyPadding;
+
+                if (xyMouseX >= x && xyMouseX <= x + xyBarWidth &&
+                    xyMouseY >= barTop && xyMouseY <= barBottom) {
+                    found = i;
+                    break;
+                }
+            }
+            xyHoveredBarIndex = found;
+            document.querySelector('.chart-container.xy').style.cursor = (found !== -1) ? 'pointer' : 'default';
+        }
+
+        function drawXY() {
+            if(!xyCtx) return;
+            xyCtx.clearRect(0, 0, xyCanvas.width, xyCanvas.height);
+
+            // Grid Background
+            for(let i = 0; i <=5; i++) {
+                const y = (xyCanvas.height - xyPadding) - (i * 20 / 100 * xyChartHeight);
+                xyCtx.beginPath();
+                xyCtx.strokeStyle = "rgba(0, 243, 255, 0.1)";
+                xyCtx.lineWidth = 1;
+                xyCtx.moveTo(xyPadding, y);
+                xyCtx.lineTo(xyCanvas.width - xyPadding, y);
+                xyCtx.stroke();
+            }
+
+            // Axes
+            xyCtx.beginPath();
+            xyCtx.strokeStyle = "#00f3ff";
+            xyCtx.lineWidth = 2;
+            xyCtx.shadowBlur = 10;
+            xyCtx.shadowColor = "#00f3ff";
+            xyCtx.moveTo(xyPadding, xyPadding);
+            xyCtx.lineTo(xyPadding, xyCanvas.height - xyPadding);
+            xyCtx.lineTo(xyCanvas.width - xyPadding, xyCanvas.height - xyPadding);
+            xyCtx.stroke();
+            xyCtx.shadowBlur = 0;
+
+            // Grid & Y Labels
+            xyCtx.fillStyle = "#e0e6ed";
+            xyCtx.font = "12px 'Rajdhani', sans-serif";
+            xyCtx.textAlign = "right";
+            xyCtx.textBaseline = "middle";
+
+            for (let i = 0; i <= 5; i++) {
+                const value = i * 20;
+                const y = (xyCanvas.height - xyPadding) - (value / 100 * xyChartHeight);
+                
+                xyCtx.beginPath();
+                xyCtx.strokeStyle = "rgba(0, 243, 255, 0.15)";
+                xyCtx.lineWidth = 1;
+                xyCtx.moveTo(xyPadding, y);
+                xyCtx.lineTo(xyCanvas.width - xyPadding, y);
+                xyCtx.stroke();
+
+                xyCtx.fillStyle = "#e0e6ed";
+                xyCtx.fillText(value + "%", xyPadding - 10, y);
+            }
+
+            // X Labels
+            xyCtx.textAlign = "center";
+            xyCtx.textBaseline = "top";
+            xyCtx.fillStyle = "#e0e6ed";
+            for (let i = 0; i < xyNumBars; i++) {
+                const x = xyPadding + xyGap + (i * (xyBarWidth + xyGap)) + (xyBarWidth / 2);
+                xyCtx.fillText(`Q${i+1}`, x, xyCanvas.height - xyPadding + 10);
+            }
+
+            // Draw Bars
+            xyPercentages.forEach((pct, i) => {
+                const x = xyPadding + xyGap + (i * (xyBarWidth + xyGap));
+                const targetHeight = (pct / 100) * xyChartHeight;
+                const currentHeight = targetHeight * xyAnimationProgress;
+                const y = (xyCanvas.height - xyPadding) - currentHeight;
+
+                const gradient = xyCtx.createLinearGradient(0, y, 0, y + currentHeight);
+                if (i === xyHoveredBarIndex) {
+                    gradient.addColorStop(0, 'rgba(188, 19, 254, 1)'); 
+                    gradient.addColorStop(1, 'rgba(19, 19, 254, 0.2)');
+                    xyCtx.shadowColor = '#bc13fe';
+                    xyCtx.shadowBlur = 20;
+                } else {
+                    gradient.addColorStop(0, '#00f3ff'); 
+                    gradient.addColorStop(1, 'rgba(0, 243, 255, 0.3)');
+                    xyCtx.shadowColor = '#00f3ff';
+                    xyCtx.shadowBlur = 15;
+                }
+
+                xyCtx.fillStyle = gradient;
+                xyCtx.fillRect(x, y, xyBarWidth, currentHeight);
+                xyCtx.shadowBlur = 0; 
+
+                if (xyAnimationProgress > 0.5) {
+                    xyCtx.fillStyle = "#fff";
+                    xyCtx.font = "bold 12px 'Orbitron', sans-serif";
+                    xyCtx.shadowColor = "rgba(0,0,0,0.8)";
+                    xyCtx.shadowBlur = 4;
+                    xyCtx.textAlign = "center";
+                    xyCtx.fillText(pct.toFixed(0) + "%", x + (xyBarWidth / 2), y - 15);
+                    xyCtx.shadowBlur = 0;
+                }
+            });
+
+            // Tooltip
+            if (xyHoveredBarIndex !== -1) {
+                const questionText = xyQuestions[xyHoveredBarIndex];
+                const barX = xyPadding + xyGap + (xyHoveredBarIndex * (xyBarWidth + xyGap));
+                
+                xyCtx.font = "13px 'Rajdhani', sans-serif";
+                const textWidth = xyCtx.measureText(questionText).width;
+                const boxPadding = 15; 
+                const boxWidth = textWidth + (boxPadding * 2);
+                const boxHeight = 40; 
+                
+                let tipX = barX - (boxWidth / 2) + (xyBarWidth / 2);
+                if (tipX < 0) tipX = 0;
+                if (tipX + boxWidth > xyCanvas.width) tipX = xyCanvas.width - boxWidth;
+
+                let tipY = xyMouseY - 55;
+                if (tipY < 0) tipY = xyMouseY + 65;
+
+                xyCtx.fillStyle = "rgba(5, 10, 16, 0.95)"; 
+                xyCtx.strokeStyle = "#bc13fe"; 
+                xyCtx.lineWidth = 2;
+                xyCtx.shadowColor = "rgba(188, 19, 254, 0.5)";
+                xyCtx.shadowBlur = 15;
+
+                if(xyCtx.roundRect) {
+                    xyCtx.beginPath();
+                    xyCtx.roundRect(tipX, tipY, boxWidth, boxHeight, 10);
+                    xyCtx.fill();
+                    xyCtx.stroke();
+                } else {
+                    xyCtx.fillRect(tipX, tipY, boxWidth, boxHeight);
+                    xyCtx.strokeRect(tipX, tipY, boxWidth, boxHeight);
+                }
+
+                xyCtx.shadowBlur = 0; 
+
+                xyCtx.fillStyle = "#fff";
+                xyCtx.textAlign = "center";
+                xyCtx.textBaseline = "middle";
+                xyCtx.fillText(questionText, tipX + (boxWidth / 2), tipY + (boxHeight / 2));
+            }
+        }
+
+        // --- 6. POSTER SLIDESHOW LOGIC (Existing) ---
+        let posterSlideIndex = 1;
+        showPosterSlides(posterSlideIndex);
+
+        function changePosterSlide(n) {
+            showPosterSlides(posterSlideIndex += n);
+        }
+
+        function showPosterSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("poster-slide");
+            if (n > slides.length) {posterSlideIndex = 1}    
+            if (n < 1) {posterSlideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slides[posterSlideIndex-1].style.display = "flex";  
+        }
+
+        // --- 7. CLIPPINGS SLIDESHOW LOGIC (WITH ZOOM & DRAG) ---
+        let clippingSlideIndex = 1;
+        let clippingZoom = 1.0;
+        let clippingX = 0; // New: Translation X
+        let clippingY = 0; // New: Translation Y
+        
+        let isClippingDragging = false; // New: Drag State
+        let clippingStartX = 0; // New: Mouse Start X
+        let clippingStartY = 0; // New: Mouse Start Y
+        
+        const clippingZoomStep = 0.1;
+        const minClippingZoom = 1.0;
+        const maxClippingZoom = 2.0;
+
+        showClippingSlides(clippingSlideIndex);
+
+        function changeClippingSlide(n) {
+            // Reset zoom and drag when changing slides
+            clippingZoom = 1.0;
+            clippingX = 0;
+            clippingY = 0;
+            showClippingSlides(clippingSlideIndex += n);
+        }
+
+        function changeClippingZoom(n) {
+            let newLevel = clippingZoom + n;
+            if (newLevel >= minClippingZoom && newLevel <= maxClippingZoom) {
+                clippingZoom = newLevel;
+                // If zooming out to 1.0, reset drag position to center
+                if (clippingZoom === 1.0) {
+                    clippingX = 0;
+                    clippingY = 0;
+                }
+                applyClippingZoom();
+            }
+        }
+
+        // --- DRAG EVENT LISTENERS ---
+        const clippingContainer = document.getElementById('clippingContainer');
+
+        clippingContainer.addEventListener('mousedown', (e) => {
+            // Only allow drag if zoomed in
+            if (clippingZoom <= 1.0) return;
+            isClippingDragging = true;
+            clippingStartX = e.clientX - clippingX;
+            clippingStartY = e.clientY - clippingY;
+            clippingContainer.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isClippingDragging) return;
+            e.preventDefault(); // Prevent text selection
+            clippingX = e.clientX - clippingStartX;
+            clippingY = e.clientY - clippingStartY;
+            applyClippingZoom();
+        });
+
+        document.addEventListener('mouseup', () => {
+            isClippingDragging = false;
+            if (clippingContainer) clippingContainer.style.cursor = 'default';
+        });
+        
+        document.addEventListener('mouseleave', () => {
+             isClippingDragging = false;
+        });
+
+        function applyClippingZoom() {
+            // Find active slide
+            const slides = document.getElementsByClassName("clipping-slide");
+            for (let i = 0; i < slides.length; i++) {
+                if (window.getComputedStyle(slides[i]).display === 'flex') {
+                    // Apply translate AND scale
+                    slides[i].style.transform = `translate(${clippingX}px, ${clippingY}px) scale(${clippingZoom})`;
+                    slides[i].style.transition = "transform 0.1s linear"; // Faster transition for dragging
+                } else {
+                    slides[i].style.transform = "scale(1)";
+                    slides[i].style.transition = "none";
+                }
+            }
+            // Update text
+            document.getElementById('clipping-zoom-display').innerText = Math.round(clippingZoom * 100) + '%';
+        }
+
+        function showClippingSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("clipping-slide");
+            if (n > slides.length) {clippingSlideIndex = 1}    
+            if (n < 1) {clippingSlideIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slides[clippingSlideIndex-1].style.display = "flex";  
+            // Apply current zoom level to the new slide immediately
+            applyClippingZoom();
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function() {
+            showPosterSlides(posterSlideIndex);
+            showClippingSlides(clippingSlideIndex);
+        });
+
+        // --- 8. ADVANCED CHATBOT LOGIC (WITH WORKING 10 FAQs) ---
+        
+        const knowledgeBase = [
+            { keywords: ['password', 'pass', 'login', 'account', 'reset'], responses: ["Security Alert: Use passwords that are at least 12 characters long.", "Tip: Never reuse passwords. A password manager helps.", "If compromised, change it immediately and enable 2FA."] },
+            { keywords: ['phishing', 'scam', 'email', 'link', 'fake'], responses: ["Phishing is a fake email designed to steal data. Check's sender's address.", "Red flags: Urgent language, generic greetings, suspicious URLs.", "Never click links asking for personal info directly."] },
+            { keywords: ['2fa', 'two factor', 'verification', 'code', 'otp'], responses: ["2FA adds a second layer of security. Even with your password, they need your phone.", "Enable 2FA on email, banking, and social media immediately.", "Methods include SMS codes, Authenticator Apps, or hardware keys."] },
+            { keywords: ['vpn', 'public wifi', 'cafe', 'airport', 'network'], responses: ["Public Wi-Fi is often unsecured. Hackers can intercept data.", "A VPN encrypts traffic, making it unreadable to snoopers.", "Always use a VPN for sensitive tasks on public networks."] },
+            { keywords: ['breach', 'leak', 'hack', 'stolen', 'lost'], responses: ["If breached, change passwords for affected accounts immediately.", "Check 'Have I Been Pwned' to see if your email was leaked.", "Monitor bank statements for unusual activity."] },
+            { keywords: ['gdpr', 'right', 'law', 'delete', 'policy'], responses: ["Under GDPR, you have the right to know what data is collected and request deletion.", "Companies must be transparent about data processing.", "Request data export or deletion in privacy settings."] },
+            { keywords: ['video', 'watch', 'tutorial', 'media'], responses: ["Check to 'Media Gallery' for our latest video tutorials.", "Great resources on 'What is Data Privacy' are available in gallery."] }
+        ];
+
+        const faqData = [
+            { id: 1, q: "What is Phishing?", a: "Phishing is a type of cyber attack where attackers disguise themselves as a trustworthy entity to steal sensitive data like passwords and credit card numbers." },
+            { id: 2, q: "How to create a strong password?", a: "Use a mix of uppercase, lowercase, numbers, and symbols. Avoid personal info and make it at least 12 characters long." },
+            { id: 3, q: "What is 2FA?", a: "Two-Factor Authentication (2FA) is a security process that requires two different forms of identification to access something." },
+            { id: 4, q: "Is public Wi-Fi safe?", a: "Usually no. Public networks are often unencrypted, allowing hackers to intercept your data. Use a VPN." },
+            { id: 5, q: "What should I do in a data breach?", a: "Immediately change your password for the affected account, enable 2FA, and monitor for suspicious activity." },
+            { id: 6, q: "What is a VPN?", a: "A Virtual Private Network (VPN) encrypts your internet connection, hiding your IP address and location from prying eyes." },
+            { id: 7, q: "What are GDPR rights?", a: "GDPR gives you the right to access, correct, and erase your personal data held by companies." },
+            { id: 8, q: "How do I spot a fake email?", a: "Check the sender's email address for spelling errors, look for urgent language, and hover over links before clicking." },
+            { id: 9, q: "Should I use antivirus software?", a: "Yes, on all devices. It provides a critical layer of defense against malware and viruses." },
+            { id: 10, q: "What is social engineering?", a: "Social engineering is the use of deception to manipulate individuals into divulging confidential or personal information." }
+        ];
+
+        const greetings = ["hi", "hello", "hey", "greetings"];
+        const farewells = ["bye", "goodbye", "exit", "quit"];
+
+        function getBotResponse(input) {
+            const lowerInput = input.toLowerCase();
+
+            if (lowerInput.includes('faq')) {
+                let listHtml = "<strong>Here are Top 10 FAQs (Click to ask):</strong><ul style='list-style-type: none; padding-left: 5px;'>";
+                faqData.forEach(faq => {
+                    listHtml += `<li onclick="handleQuickReply('${faq.q}')" style="cursor:pointer; margin-bottom: 8px; color: var(--neon-blue); border-bottom: 1px solid #333; padding-bottom: 5px;">${faq.id}. ${faq.q}</li>`;
+                });
+                listHtml += "</ul><em>Click a question to see the answer.</em>";
+                return listHtml;
+            }
+
+            const faqMatch = faqData.find(f => lowerInput === f.q.toLowerCase());
+            if (faqMatch) {
+                return faqMatch.a;
+            }
+
+            for (const entry of knowledgeBase) {
+                if (entry.keywords.some(keyword => lowerInput.includes(keyword))) {
+                    return entry.responses[Math.floor(Math.random() * entry.responses.length)];
+                }
+            }
+
+            if (farewells.some(word => lowerInput.includes(word))) {
+                return "Stay safe online. Goodbye!";
+            }
+
+            if (greetings.some(word => lowerInput.includes(word))) {
+                return "Hello! I am your Privacy Assistant. How can I help you secure your data today?";
+            }
+
+            return "I'm not sure I understand that. Try asking about 'phishing', 'passwords', '2FA', or 'VPNs'.";
+        }
+
+        function addMessage(text, sender) {
+            const chatBox = document.getElementById('bot-messages');
+            const typingIndicator = document.getElementById('typing-indicator');
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}-msg`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            msgDiv.innerHTML = `
+                <span class="message-content">${text}</span>
+                <span class="message-time">${time}</span>
+            `;
+            
+            chatBox.insertBefore(msgDiv, typingIndicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showTyping() {
+            const indicator = document.getElementById('typing-indicator');
+            indicator.style.display = 'flex';
+            const chatBox = document.getElementById('bot-messages');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function hideTyping() {
+            document.getElementById('typing-indicator').style.display = 'none';
+        }
+
+        function processUserMessage() {
+            const input = document.getElementById('bot-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage(text, 'user');
+            input.value = '';
+            showTyping();
+
+            const delay = Math.random() * 1000 + 800;
+            setTimeout(() => {
+                hideTyping();
+                const response = getBotResponse(text);
+                addMessage(response, 'bot');
+            }, delay);
+        }
+
+        function handleQuickReply(text) {
+            document.getElementById('bot-input').value = text;
+            processUserMessage();
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') processUserMessage();
+        }
+
+        // --- 9. ADVANCED FORUM TABS LOGIC ---
+        function switchForumTab(tabName) {
+            document.querySelectorAll('.forum-tab-btn').forEach(btn => btn.classList.remove('active'));
+            if(event && event.currentTarget) event.currentTarget.classList.add('active');
+            else if(tabName === 'intro') document.querySelector('.forum-tab-btn:nth-child(1)').classList.add('active');
+            else document.querySelector('.forum-tab-btn:nth-child(2)').classList.add('active');
+
+            document.getElementById('tab-intro').style.display = tabName === 'intro' ? 'block' : 'none';
+            document.getElementById('tab-discuss-controls').style.display = tabName === 'discuss' ? 'block' : 'none';
+
+            document.getElementById('tab-intro-main').style.display = tabName === 'intro' ? 'block' : 'none';
+            document.getElementById('tab-discuss-feed').style.display = tabName === 'discuss' ? 'block' : 'none';
+        }
+
+        function postComment() {
+            const input = document.getElementById('user-input');
+            const feed = document.getElementById('community-feed');
+            const text = input.value.trim();
+            if(text !== "") {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'forum-post-card';
+                postDiv.innerHTML = `
+                    <div class="post-vote-box">
+                        <button class="vote-btn">▲</button>
+                        <span class="vote-count">0</span>
+                        <button class="vote-btn">▼</button>
+                    </div>
+                    <div class="post-content-area">
+                        <div class="post-header">
+                            <div class="post-user-info">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="post-avatar" alt="User">
+                                <div>
+                                    <div class="post-username">You</div>
+                                    <div class="post-meta">Just now</div>
+                                </div>
+                            </div>
+                            <span class="post-tag">Question</span>
+                        </div>
+                        <p>${text}</p>
+                    </div>
+                `;
+                feed.prepend(postDiv);
+                input.value = "";
+            }
+        }
+
+        // --- 10. PDF MODAL (UPDATED FOR GOOGLE DRIVE) ---
+        
+        // Configuration
+        const googleDriveId = "1peMSYi8xAaSnM_uNooCVMyM7-y2qtccg";
+        const previewUrl = `https://drive.google.com/file/d/${googleDriveId}/preview`;
+        const downloadUrl = `https://drive.google.com/uc?export=download&id=${googleDriveId}`;
+
+        function openPDFModal() {
+            const modal = document.getElementById('pdf-modal');
+            const iframe = document.getElementById('pdf-preview-frame');
+            
+            // Set the iframe src to the Google Drive Preview link
+            iframe.src = previewUrl;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closePDF() {
+            const modal = document.getElementById('pdf-modal');
+            const iframe = document.getElementById('pdf-preview-frame');
+            
+            // Clear src to stop playing/video/audio when closed
+            iframe.src = "";
+            
+            modal.style.display = 'none';
+        }
+
+        function downloadPDF() {
+            // Open the direct download link in a new tab/window
+            window.open(downloadUrl, '_blank');
+        }
+
+        // --- 11. POLL FUNCTION ---
+        function vote(element, percentage) {
+            const questionBox = element.closest('.poll-question');
+            const options = questionBox.querySelectorAll('.poll-option');
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                opt.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                const bar = opt.querySelector('.progress-bar');
+                const fill = opt.querySelector('.progress-fill');
+                bar.style.display = 'block';
+                const match = opt.getAttribute('onclick').match(/\d+/);
+                if(match) {
+                    const percent = match[0];
+                    fill.style.width = percent + '%';
+                    fill.textContent = percent + '%';
+                }
+            });
+            element.style.backgroundColor = 'rgba(0, 243, 255, 0.2)';
+            element.style.borderColor = 'var(--neon-blue)';
+        }
+    </script>
+</body>
+</html>
