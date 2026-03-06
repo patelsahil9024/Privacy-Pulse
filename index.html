@@ -131,7 +131,7 @@
 
         /* --- CHART --- */
         .chart-container { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-blue); border-radius: 10px; padding: 20px; margin: 30px 0; box-shadow: 0 0 30px rgba(0, 243, 255, 0.1); height: 600px; position: relative; }
-        .chart-container.xy { height: auto; min-height: 600px; }
+        .chart-container.xy { height: auto; min-height: 800px; }
         
         /* --- FLIP CARDS --- */
         .dos-donts-container { display: flex; gap: 40px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
@@ -194,16 +194,12 @@
             height: 160px;
             font-size: 2.5rem;
             background: rgba(0, 0, 0, 0.6);
-            
-            /* ACTIVE STYLES APPLIED PERMANENTLY (REMOVED FROM :HOVER) */
             box-shadow: 0 0 30px var(--neon-blue);
             border-color: #fff;
             background: rgba(0, 243, 255, 0.1);
-            cursor: default; /* No longer pointer */
+            cursor: default; 
         }
         
-        /* Removed .outer-hex:hover to disable interaction */
-
         /* Precise Positioning for the 6-side layout */
         .pos-1 { transform: translateY(-240px); }
         .pos-2 { transform: translate(210px, -120px); }
@@ -251,16 +247,14 @@
         .arrow-line {
             fill: none;
             stroke: var(--neon-blue);
-            stroke-width: 2px; /* Thinner as requested */
+            stroke-width: 2px; 
             stroke-dasharray: 10, 6;
-            opacity: 0.5; /* Less prominent */
+            opacity: 0.5; 
             filter: drop-shadow(0 0 5px var(--neon-blue));
         }
 
         /* === UPDATED CONTENT (NO HOVER) === */
-        .hex-number {
-            opacity: 0; /* Hidden permanently */
-        }
+        .hex-number { opacity: 0; }
 
         .hex-content {
             position: absolute;
@@ -270,35 +264,32 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 5px; /* Reduced padding */
+            padding: 5px; 
             box-sizing: border-box;
-            opacity: 1; /* Visible permanently */
+            opacity: 1; 
             pointer-events: auto;
             background: rgba(0, 0, 0, 0.95); 
             z-index: 30;
         }
 
-        /* Removed .outer-hex:hover .hex-content */
-        /* Removed .outer-hex:hover .hex-number */
-
         .hex-content h4 {
-            margin: 0 0 2px 0; /* Reduced margin */
+            margin: 0 0 2px 0; 
             font-size: 0.85rem;
             color: var(--neon-blue);
             text-transform: uppercase;
             font-weight: 800;
             line-height: 1.1;
             text-align: center;
-            letter-spacing: normal; /* Ensure normal spacing */
+            letter-spacing: normal; 
         }
 
         .hex-content p {
             margin: 0;
             font-size: 0.75rem;
             color: #fff;
-            line-height: 1.1; /* Tighter line height */
+            line-height: 1.1; 
             text-align: center;
-            letter-spacing: normal; /* Ensure normal spacing */
+            letter-spacing: normal; 
             word-spacing: normal;
         }
 
@@ -699,15 +690,6 @@
         .post-tag { background: rgba(0, 243, 255, 0.1); color: var(--neon-blue); padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; border: 1px solid rgba(0, 243, 255, 0.3); }
         .input-area { display: flex; gap: 10px; margin-top: 20px; }
 
-        /* --- ABOUT ME PAGE --- */
-        .profile-header { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; margin-bottom: 50px; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 15px; border: 1px solid var(--neon-yellow); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
-        .profile-info h2 { color: var(--neon-yellow); margin-bottom: 10px; text-transform: uppercase; font-size: 2.5rem; }
-        .profile-role { font-size: 1.5rem; color: #fff; margin-bottom: 20px; font-family: 'Orbitron'; }
-        .profile-bio { font-size: 1.1rem; color: #ccc; border-left: 3px solid var(--neon-yellow); padding-left: 20px; margin-bottom: 30px; }
-        .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
-        .skill-tag { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--neon-yellow); color: var(--neon-yellow); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-family: 'Orbitron'; }
-        .quote-box { font-style: italic; font-size: 1.4rem; color: #fff; text-align: center; margin-top: 40px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; }
-
         /* --- UPDATED PROFILE PHOTO DESIGN STYLES --- */
         .modern-qr-wrapper {
             display: flex;
@@ -715,7 +697,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: #000; /* Black background for the wrapper itself to match design */
+            background: #000; 
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             width: fit-content;
@@ -724,12 +706,12 @@
 
         .qr-image-container {
             padding: 10px;
-            background: #fff; /* White background for photo contrast */
-            border: 4px solid #000; /* Explicit black border */
-            border-radius: 15px; /* Rounded corners for a modern photo look */
+            background: #fff; 
+            border: 4px solid #000; 
+            border-radius: 15px; 
             margin-bottom: 20px;
             box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            overflow: hidden; /* Ensures rounded corners clip the image */
+            overflow: hidden; 
             width: 250px; 
             height: 250px; 
             display: flex;
@@ -740,24 +722,164 @@
         .qr-image-container img {
             max-width: 100%;
             max-height: 100%;
-            /* CHANGED: object-fit from cover to contain to ensure the WHOLE photo/QR is visible */
             object-fit: contain; 
             transition: transform 0.3s;
         }
 
         .qr-image-container:hover img {
-            transform: scale(1.05); /* Slight zoom on hover */
+            transform: scale(1.05); 
         }
 
-        /* === UPDATED: SPECIFIC SIZE & STYLE FOR ABOUT ME PHOTO === */
-        #about .qr-image-container {
-            width: 400px;  /* Increased width */
-            height: 500px; /* Increased height */
-            
-            /* STYLE UPDATE: Matching the "Same Type" neon look from the first snippet */
-            background: #000; /* Dark background */
-            border: 2px solid #00f3ff; /* Neon Blue Border */
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5); /* Neon Glow */
+        /* --- COMBINED CONTACT & PROFILE SECTION STYLES --- */
+        .combined-contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-between;
+        }
+
+        .profile-col {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 15px;
+        }
+
+        .profile-col .modern-qr-wrapper {
+            background: transparent; 
+            box-shadow: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Specific Style for Profile Photo in Combined Section */
+        .profile-col .qr-image-container {
+            width: 300px;
+            height: 350px;
+            background: #000;
+            border: 2px solid var(--neon-yellow);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .profile-col h2 {
+            color: var(--neon-yellow);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            border: none;
+            padding: 0;
+            text-transform: uppercase;
+        }
+
+        .profile-role {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 20px;
+            font-family: 'Orbitron';
+            font-weight: bold;
+        }
+
+        .profile-bio {
+            font-size: 1rem;
+            color: #ccc;
+            text-align: left;
+            width: 100%;
+            border-left: 3px solid var(--neon-yellow);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        .skill-tag { background: rgba(255, 215, 0, 0.1); border: 1px solid var(--neon-yellow); color: var(--neon-yellow); padding: 8px 15px; border-radius: 20px; font-weight: bold; font-family: 'Orbitron'; font-size: 0.9rem; }
+
+        .quote-box {
+            font-style: italic; font-size: 1.2rem; color: #fff; text-align: center; margin-top: auto; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; border: 1px solid #444;
+        }
+
+        .contact-col {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 15px;
+        }
+
+        .contact-col h3 {
+            color: var(--neon-blue);
+            font-size: 2rem;
+            margin: 0 0 30px 0;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 10px;
+        }
+
+        .contact-details {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .contact-details p {
+            color: #aaa;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .contact-details a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .contact-details a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .scan-me-btn {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .scan-me-btn:hover .scan-icon-circle {
+            background: var(--neon-blue);
+            color: #000;
+        }
+        .scan-icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+        .scan-text {
+            font-family: 'Orbitron';
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            letter-spacing: 2px;
         }
 
         /* --- PDF MODAL --- */
@@ -765,10 +887,8 @@
         .modal-content { background: #1a1a1a; color: #eee; width: 90%; max-width: 900px; height: 90%; border-radius: 10px; display: flex; flex-direction: column; box-shadow: 0 0 50px rgba(0, 243, 255, 0.3); border: 1px solid var(--neon-blue); overflow: hidden; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal-header { background: rgba(0, 243, 255, 0.1); padding: 15px 25px; border-bottom: 1px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center; }
         .modal-header h3 { margin: 0; font-size: 1.2rem; color: var(--neon-blue); }
-        /* Updated modal body to use iframe for preview */
         .modal-body { padding: 0; flex: 1; position: relative; background: #fff; overflow: hidden; }
         .modal-body iframe { width: 100%; height: 100%; border: none; }
-        
         .modal-footer { padding: 15px; border-top: 1px solid #333; text-align: right; background: #111; }
         .modal-btn { background: #333; color: white; border: 1px solid #555; padding: 8px 20px; cursor: pointer; font-family: 'Orbitron'; margin-left: 10px; transition: 0.3s; }
         .modal-btn.download { background: var(--neon-blue); color: black; border: none; font-weight: bold; }
@@ -793,10 +913,10 @@
             .stories-grid { grid-template-columns: 1fr; }
             .forum-layout { flex-direction: column; }
             .forum-sidebar { width: 100%; margin-bottom: 30px; }
-            .profile-header { flex-direction: column; text-align: center; }
+            .combined-contact-wrapper { flex-direction: column; }
+            .profile-col, .contact-col { width: 100%; }
             .qr-image-container { width: 200px; height: 200px; }
-            /* Mobile override for About Me photo */
-            #about .qr-image-container { width: 280px; height: 350px; }
+            .profile-col .qr-image-container { width: 250px; height: 300px; }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -845,7 +965,7 @@
             <a href="#chatbot" class="nav-link" onclick="navigate(event, 'chatbot')">Chatbot</a>
             <a href="#community" class="nav-link" onclick="navigate(event, 'community')">Forum</a>
             <a href="#resources" class="nav-link" onclick="navigate(event, 'resources')">Resources</a>
-            <a href="#about" class="nav-link" onclick="navigate(event, 'about')">About Me</a>
+            <!-- Removed About Link -->
             <a href="#contact" class="nav-link" onclick="navigate(event, 'contact')">Contact</a>
         </nav>
 
@@ -901,11 +1021,12 @@
                             <canvas id="awarenessChart"></canvas>
                         </div>
 
-                        <!-- === X-Y AXIS CHART SECTION (KEEPING FIXED VERSION) === -->
+                        <!-- === X-Y AXIS CHART SECTION (UPDATED LABELS + HOVER TOOLTIP) === -->
                         <h3 style="text-align: center; margin-top: 50px;">Detailed Survey Analysis (X-Y Axis)</h3>
-                        <p style="text-align: center; color: #666;">Hover over bars to reveal specific question text.</p>
+                        <p style="text-align: center; color: #666;">Questions are visible below the bars. Hover over bars for details.</p>
                         <div class="chart-container xy" style="padding: 10px;">
-                            <canvas id="xyCanvas" width="800" height="500" style="width: 100%; height: auto;"></canvas>
+                            <!-- Increased height to 800 to accommodate text labels and tooltips -->
+                            <canvas id="xyCanvas" width="800" height="800" style="width: 100%; height: auto;"></canvas>
                         </div>
 
                         <p style="text-align: center; color: #666;">This chart illustrates percentage of college students aware of data privacy risks across different categories.</p>
@@ -1785,70 +1906,65 @@
                 </section>
             </div>
 
-            <!-- === PAGE 9: ABOUT ME === -->
-            <div id="about" class="page-section">
-                <section>
-                    <div class="container">
-                        <h2>About Me</h2>
-                        <div class="profile-header">
-                            <!-- UPDATED: Profile Photo (Using the file provided) -->
-                            <div class="modern-qr-wrapper">
-                                <div class="qr-image-container">
-                                    <!-- UPDATED: Image source changed to the specific URL requested -->
-                                    <img src="https://z-cdn-media.chatglm.cn/files/5f2a419e-a4d3-4744-9ed9-325fd9c7eee6.jpg?auth_key=1870567609-3e387fcbeeab4694a563ef45aa6811b5-0-d666e737d740bdacb3d45215e5626dc4" alt="Mr. Sahil Patel">
-                                </div>
-                            </div>
-
-                            <div class="profile-info">
-                                <h2>Mr. Sahil Sahablal Patel</h2>
-                                <p class="profile-role">Aspiring Cyber Security Specialist</p>
-                                <p class="profile-bio">I am currently pursuing my B.Sc. in Information Technology at Mansi Bharat Gada Degree College. I built this project to bridge the gap between technical jargon and student awareness.</p>
-                            </div>
-                        </div>
-                        <h3 style="margin-top: 30px;">Technical Skills</h3>
-                        <div class="skills-grid">
-                            <span class="skill-tag">HTML5 / CSS3</span>
-                            <span class="skill-tag">JavaScript</span>
-                            <span class="skill-tag">Cyber Security Basics</span>
-                        </div>
-                        <div class="quote-box">
-                            <p>"In a world where data is the new oil, privacy is the refining process. We must choose to be the refineries, not the crude oil."</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- === PAGE 10: CONTACT === -->
+            <!-- === PAGE 9: COMBINED CONTACT & PROFILE (MERGED) === -->
             <div id="contact" class="page-section">
                 <section>
                     <div class="container">
-                        <h2>Contact</h2>
-                        <div class="contact-wrapper" style="display: flex; gap: 40px; flex-wrap: wrap; justify-content: center;">
+                        <h2>Contact & Profile</h2>
+                        <div class="combined-contact-wrapper">
                             
-                            <!-- UPDATED: Custom QR Code Container -->
-                            <div class="modern-qr-wrapper">
-                                <div class="qr-image-container">
-                                    <!-- UPDATED: Using the specific high-quality QR Code URL requested -->
-                                    <img src="https://z-cdn-media.chatglm.cn/files/e90c2d6d-caf2-4229-a3e4-e2e185927a67.jpg?auth_key=1871848072-9df703cfc91f4847a9402561fb4fa245-0-3c4f8f12815be6e8c6b323eb1745faae" alt="QR Code">
-                                </div>
-                                <div class="scan-me-btn" onclick="window.location.href='#about'">
-                                    <div class="scan-icon-circle">
-                                        <!-- SVG Icon for QR/Scan -->
-                                        <svg viewBox="0 0 24 24">
-                                            <path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v2h-2v-2zm3 3h3v5h-3v-5zm-3 0h2v5h-2v-2zM5 15h2v2H5v-2z"/>
-                                        </svg>
+                            <!-- Left Column: Profile Info -->
+                            <div class="profile-col">
+                                <div class="modern-qr-wrapper">
+                                    <div class="qr-image-container">
+                                        <!-- Profile Photo URL -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/5f2a419e-a4d3-4744-9ed9-325fd9c7eee6.jpg?auth_key=1870567609-3e387fcbeeab4694a563ef45aa6811b5-0-d666e737d740bdacb3d45215e5626dc4" alt="Mr. Sahil Patel">
                                     </div>
-                                    <span class="scan-text">SCAN ME</span>
+                                </div>
+
+                                <h2>Mr. Sahil Sahablal Patel</h2>
+                                <p class="profile-role">Aspiring Cyber Security Specialist</p>
+                                <p class="profile-bio">I am currently pursuing my B.Sc. in Information Technology at Mansi Bharat Gada Degree College. I built this project to bridge the gap between technical jargon and student awareness.</p>
+                                
+                                <h3 style="font-size: 1.2rem; color: var(--neon-blue);">Technical Skills</h3>
+                                <div class="skills-grid">
+                                    <span class="skill-tag">HTML5 / CSS3</span>
+                                    <span class="skill-tag">JavaScript</span>
+                                    <span class="skill-tag">Cyber Security Basics</span>
+                                </div>
+                                
+                                <div class="quote-box">
+                                    <p>"In a world where data is the new oil, privacy is the refining process. We must choose to be the refineries, not the crude oil."</p>
                                 </div>
                             </div>
 
-                            <div class="contact-card">
-                                <div style="color: white;">
-                                    <h3 style="margin: 0 0 15px 0; color: #0277bd;">Mr. Sahil Sahablal Patel</h3>
-                                    <p style="margin: 8px 0; color: #455a64;"><strong>Project:</strong> Awareness of Data Privacy</p>
-                                    <p style="margin: 8px 0; color: #455a64;"><strong>Email:</strong> <a href="mailto:patelsahil9024@gmail.com" style="color:var(--neon-blue)">patelsahil9024@gmail.com</a></p>
+                            <!-- Right Column: Contact Info -->
+                            <div class="contact-col">
+                                <h3>Get In Touch</h3>
+                                <div class="contact-details">
+                                    <p><strong>Project:</strong> Awareness of Data Privacy</p>
+                                    <p><strong>Email:</strong> <a href="mailto:patelsahil9024@gmail.com">patelsahil9024@gmail.com</a></p>
+                                    <p><strong>Location:</strong> Mumbai, India</p>
+                                </div>
+
+                                <!-- QR Code Section -->
+                                <div class="modern-qr-wrapper">
+                                    <div class="qr-image-container">
+                                        <!-- Updated QR Code URL -->
+                                        <img src="https://z-cdn-media.chatglm.cn/files/06246b71-50fc-41a2-956f-b28c5c613a5a.jpeg?auth_key=1872790391-9649149602294623af9765d61295e080-0-26693a369a7965800becd3bec0bbb378" alt="QR Code">
+                                    </div>
+                                    <div class="scan-me-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                                        <div class="scan-icon-circle">
+                                            <!-- SVG Icon for QR/Scan -->
+                                            <svg viewBox="0 0 24 24" style="width:24px;height:24px;">
+                                                <path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 0h2v2h-2v-2zm3 3h3v5h-3v-5zm-3 0h2v5h-2v-2zM5 15h2v2H5v-2z" fill="currentColor"/>
+                                            </svg>
+                                        </div>
+                                        <span class="scan-text">BACK TO TOP</span>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </section>
@@ -1965,7 +2081,7 @@
             chartInitialized = true;
         }
 
-        // --- 5. NEW X-Y AXIS CHART LOGIC (FROM PROVIDED SOURCE) ---
+        // --- 5. NEW X-Y AXIS CHART LOGIC (UPDATED LABELS VISIBILITY + HOVER TOOLTIP) ---
         const xyQuestions = [
             "Understanding of Data Privacy",
             "Concerned - Social Media",
@@ -1988,7 +2104,7 @@
             ["Om", "Yes", "No", "No", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
             ["Aditya Singha", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "No"],
             ["Soni jash", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
-            ["Mahi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Mahi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
             ["Satyam prajapati", "Yes", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
             ["Ankita Manjhi", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No"],
             ["Patel kiran", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "No", "No"],
@@ -2012,12 +2128,12 @@
             ["Ganesh Choudhary", "Yes", "No", "No", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes"],
             ["Priti Pratap Soni", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
             ["Goli sneha Naresh", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
-            ["Rajesh gaddam", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
+            ["Rajesh gaddam", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No"],
             ["CHERYALA MEENAL", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
             ["Kajal soni", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
-            ["Jyoti ranjeet umate", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
-            ["Bhavnesh", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
-            ["Sushmitha Ekkaldevi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Jyoti ranjeet umate", "Yes", "No", "No", "No", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Bhavnesh", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
+            ["Sushmitha Ekkaldevi", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
             ["Ette Gagana Eshwar", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes"],
             ["Soumdeep", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
             ["raju", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes"],
@@ -2164,13 +2280,37 @@
                 xyCtx.fillText(value + "%", xyPadding - 10, y);
             }
 
-            // X Labels
+            // X Labels - ALWAYS VISIBLE (Updated Request)
             xyCtx.textAlign = "center";
             xyCtx.textBaseline = "top";
             xyCtx.fillStyle = "#e0e6ed";
+            xyCtx.font = "11px 'Rajdhani', sans-serif"; 
+
             for (let i = 0; i < xyNumBars; i++) {
                 const x = xyPadding + xyGap + (i * (xyBarWidth + xyGap)) + (xyBarWidth / 2);
-                xyCtx.fillText(`Q${i+1}`, x, xyCanvas.height - xyPadding + 10);
+                // Drawing the full Question Text wrapped
+                const questionText = xyQuestions[i];
+                const words = questionText.split(' ');
+                let line = '';
+                let yText = xyCanvas.height - xyPadding + 15;
+                const maxWidth = xyBarWidth + (xyGap * 0.8); 
+
+                xyCtx.font = "11px 'Rajdhani', sans-serif";
+                xyCtx.fillStyle = (i === xyHoveredBarIndex) ? "#fff" : "#e0e6ed";
+
+                for(let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const metrics = xyCtx.measureText(testLine);
+                    const testWidth = metrics.width;
+                    if (testWidth > maxWidth && n > 0) {
+                        xyCtx.fillText(line, x, yText);
+                        line = words[n] + ' ';
+                        yText += 14; // Line height
+                    } else {
+                        line = testLine;
+                    }
+                }
+                xyCtx.fillText(line, x, yText);
             }
 
             // Draw Bars
@@ -2208,7 +2348,7 @@
                 }
             });
 
-            // Tooltip
+            // Tooltip (Restored Hover Effect)
             if (xyHoveredBarIndex !== -1) {
                 const questionText = xyQuestions[xyHoveredBarIndex];
                 const barX = xyPadding + xyGap + (xyHoveredBarIndex * (xyBarWidth + xyGap));
@@ -2273,12 +2413,12 @@
         // --- 7. CLIPPINGS SLIDESHOW LOGIC (WITH ZOOM & DRAG) ---
         let clippingSlideIndex = 1;
         let clippingZoom = 1.0;
-        let clippingX = 0; // New: Translation X
-        let clippingY = 0; // New: Translation Y
+        let clippingX = 0; 
+        let clippingY = 0; 
         
-        let isClippingDragging = false; // New: Drag State
-        let clippingStartX = 0; // New: Mouse Start X
-        let clippingStartY = 0; // New: Mouse Start Y
+        let isClippingDragging = false; 
+        let clippingStartX = 0; 
+        let clippingStartY = 0; 
         
         const clippingZoomStep = 0.1;
         const minClippingZoom = 1.0;
@@ -2287,7 +2427,6 @@
         showClippingSlides(clippingSlideIndex);
 
         function changeClippingSlide(n) {
-            // Reset zoom and drag when changing slides
             clippingZoom = 1.0;
             clippingX = 0;
             clippingY = 0;
@@ -2298,7 +2437,6 @@
             let newLevel = clippingZoom + n;
             if (newLevel >= minClippingZoom && newLevel <= maxClippingZoom) {
                 clippingZoom = newLevel;
-                // If zooming out to 1.0, reset drag position to center
                 if (clippingZoom === 1.0) {
                     clippingX = 0;
                     clippingY = 0;
@@ -2307,11 +2445,9 @@
             }
         }
 
-        // --- DRAG EVENT LISTENERS ---
         const clippingContainer = document.getElementById('clippingContainer');
 
         clippingContainer.addEventListener('mousedown', (e) => {
-            // Only allow drag if zoomed in
             if (clippingZoom <= 1.0) return;
             isClippingDragging = true;
             clippingStartX = e.clientX - clippingX;
@@ -2321,7 +2457,7 @@
 
         document.addEventListener('mousemove', (e) => {
             if (!isClippingDragging) return;
-            e.preventDefault(); // Prevent text selection
+            e.preventDefault(); 
             clippingX = e.clientX - clippingStartX;
             clippingY = e.clientY - clippingStartY;
             applyClippingZoom();
@@ -2337,19 +2473,16 @@
         });
 
         function applyClippingZoom() {
-            // Find active slide
             const slides = document.getElementsByClassName("clipping-slide");
             for (let i = 0; i < slides.length; i++) {
                 if (window.getComputedStyle(slides[i]).display === 'flex') {
-                    // Apply translate AND scale
                     slides[i].style.transform = `translate(${clippingX}px, ${clippingY}px) scale(${clippingZoom})`;
-                    slides[i].style.transition = "transform 0.1s linear"; // Faster transition for dragging
+                    slides[i].style.transition = "transform 0.1s linear"; 
                 } else {
                     slides[i].style.transform = "scale(1)";
                     slides[i].style.transition = "none";
                 }
             }
-            // Update text
             document.getElementById('clipping-zoom-display').innerText = Math.round(clippingZoom * 100) + '%';
         }
 
@@ -2362,11 +2495,9 @@
                 slides[i].style.display = "none";  
             }
             slides[clippingSlideIndex-1].style.display = "flex";  
-            // Apply current zoom level to the new slide immediately
             applyClippingZoom();
         }
 
-        // Initialize
         document.addEventListener("DOMContentLoaded", function() {
             showPosterSlides(posterSlideIndex);
             showClippingSlides(clippingSlideIndex);
@@ -2537,7 +2668,6 @@
 
         // --- 10. PDF MODAL (UPDATED FOR GOOGLE DRIVE) ---
         
-        // Configuration
         const googleDriveId = "1peMSYi8xAaSnM_uNooCVMyM7-y2qtccg";
         const previewUrl = `https://drive.google.com/file/d/${googleDriveId}/preview`;
         const downloadUrl = `https://drive.google.com/uc?export=download&id=${googleDriveId}`;
@@ -2546,7 +2676,6 @@
             const modal = document.getElementById('pdf-modal');
             const iframe = document.getElementById('pdf-preview-frame');
             
-            // Set the iframe src to the Google Drive Preview link
             iframe.src = previewUrl;
             
             modal.style.display = 'flex';
@@ -2556,14 +2685,12 @@
             const modal = document.getElementById('pdf-modal');
             const iframe = document.getElementById('pdf-preview-frame');
             
-            // Clear src to stop playing/video/audio when closed
             iframe.src = "";
             
             modal.style.display = 'none';
         }
 
         function downloadPDF() {
-            // Open the direct download link in a new tab/window
             window.open(downloadUrl, '_blank');
         }
 
